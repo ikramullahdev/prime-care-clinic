@@ -1,0 +1,4076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Prime Care Clinic Management System</title>
+  <meta name="description" content="Medical management console for Prime Care Clinic & Diabetes Center.">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 70px;
+      --navy-900: #0b2545;
+      --navy-800: #133a6b;
+      --navy-700: #1d4e89;
+      --teal-600: #0f8181;
+      --teal-700: #0c6a6a;
+      --teal-50: #f0fdfa;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+    }
+
+    body.admin-body {
+      background-color: var(--gray-50);
+      color: var(--gray-900);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────────── */
+    .admin-sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-900);
+      color: #ffffff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      transition: transform 0.25s ease;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .sidebar-brand {
+      height: var(--topbar-height);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+    }
+
+    .sidebar-brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .sidebar-brand-text {
+      line-height: 1.2;
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      font-weight: 700;
+      padding: 0 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .nav-item-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .nav-item-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .nav-item-btn.active {
+      background: var(--teal-600);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(15, 129, 129, 0.35);
+    }
+
+    .nav-icon {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      font-weight: 700;
+    }
+
+    .nav-badge.live {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    .nav-badge.pending {
+      background: rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+    }
+
+    .sidebar-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── Main Content Area ───────────────────────────────────────── */
+    .admin-main-wrap {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top Navigation Bar */
+    .admin-topbar {
+      height: var(--topbar-height);
+      background: #ffffff;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--gray-700);
+    }
+
+    .topbar-search {
+      position: relative;
+      width: 300px;
+    }
+
+    .topbar-search input {
+      width: 100%;
+      padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+      font-size: 0.875rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      background: var(--gray-50);
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .topbar-search input:focus {
+      background: #ffffff;
+      border-color: var(--teal-600);
+      box-shadow: 0 0 0 3px rgba(15, 129, 129, 0.1);
+    }
+
+    .topbar-search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .api-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .api-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #059669;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--navy-900);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .user-info {
+      line-height: 1.2;
+    }
+
+    .user-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--navy-900);
+    }
+
+    .user-role {
+      font-size: 0.7rem;
+      color: var(--teal-600);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .btn-topbar-logout {
+      background: transparent;
+      border: 1px solid #fecdd3;
+      color: #e11d48;
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-topbar-logout:hover {
+      background: #ffe4e6;
+    }
+
+    /* Content Canvas */
+    .admin-content {
+      padding: 2rem 2rem 4rem;
+      flex: 1;
+    }
+
+    .page-header-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .page-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin: 0 0 0.25rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    .page-desc {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      margin: 0;
+    }
+
+    .header-action-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ── Metrics Grid ────────────────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--navy-800);
+    }
+
+    .metric-card.teal::before { background: var(--teal-600); }
+    .metric-card.amber::before { background: #d97706; }
+    .metric-card.emerald::before { background: #059669; }
+    .metric-card.indigo::before { background: #4f46e5; }
+    .metric-card.rose::before { background: #e11d48; }
+
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      line-height: 1;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Filter Toolbar ─────────────────────────────────────────── */
+    .filter-card {
+      background: #ffffff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .filter-item {
+      flex: 1;
+      min-width: 170px;
+    }
+
+    .filter-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.35rem;
+    }
+
+    .filter-select, .filter-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      background: #ffffff;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease;
+    }
+
+    .filter-select:focus, .filter-input:focus {
+      border-color: var(--teal-600);
+    }
+
+    /* ── Tables & Data Presentation ─────────────────────────────── */
+    .data-table-card {
+      background: #ffffff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    .data-table th {
+      background: var(--gray-100);
+      color: var(--navy-900);
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      white-space: nowrap;
+      font-size: 0.8125rem;
+    }
+
+    .data-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
+
+    .data-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-pill.pending { background: #fef3c7; color: #92400e; }
+    .status-pill.confirmed { background: #d1fae5; color: #065f46; }
+    .status-pill.completed { background: #e0e7ff; color: #3730a3; }
+    .status-pill.cancelled { background: #ffe4e6; color: #9f1239; }
+
+    .action-btn {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid var(--gray-300);
+      background: #ffffff;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .action-btn:hover {
+      background: var(--gray-100);
+      border-color: var(--gray-400);
+    }
+
+    .action-btn.primary {
+      background: var(--teal-600);
+      border-color: var(--teal-600);
+      color: #ffffff;
+    }
+
+    .action-btn.primary:hover {
+      background: var(--teal-700);
+    }
+
+    .action-btn.danger {
+      color: #e11d48;
+      border-color: #fecdd3;
+    }
+
+    .action-btn.danger:hover {
+      background: #ffe4e6;
+    }
+
+    /* ── Modals ─────────────────────────────────────────────────── */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(11, 37, 69, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 14px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      padding: 1.75rem;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin: 0;
+    }
+
+    /* ── Modules / Placeholder Card ─────────────────────────────── */
+    .module-placeholder-card {
+      background: #ffffff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .module-notice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Patient Registration System Styles ─────────────────────── */
+    .modal-box-large {
+      max-width: 780px;
+      width: 100%;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--navy-900);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.875rem;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      box-sizing: border-box;
+      outline: none;
+      transition: all 0.2s ease;
+      background: #ffffff;
+    }
+
+    .form-control:focus {
+      border-color: var(--teal-600);
+      box-shadow: 0 0 0 3px rgba(15, 129, 129, 0.12);
+    }
+
+    .form-hint {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    .segment-switch {
+      display: inline-flex;
+      background: var(--gray-100);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      gap: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .segment-btn {
+      border: none;
+      background: transparent;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .segment-btn.active {
+      background: #ffffff;
+      color: var(--navy-900);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-box {
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .alert-box.danger {
+      background: #fef2f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+    }
+
+    .alert-box.warning {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .alert-box.success {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .mrn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #0f766e;
+      background: #ccfbf1;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid #99f6e4;
+    }
+
+    .dob-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8125rem;
+    }
+
+    .badge-est {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.6875rem;
+    }
+
+    .badge-exact {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.6875rem;
+    }
+
+    .audit-card {
+      background: #f8fafc;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.8125rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid var(--gray-200);
+      background: #ffffff;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.8125rem;
+      color: #64748b;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .page-btn {
+      padding: 0.35rem 0.65rem;
+      border: 1px solid var(--gray-200);
+      background: #ffffff;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      cursor: pointer;
+      color: var(--gray-700);
+      transition: all 0.15s ease;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: var(--gray-100);
+      border-color: var(--gray-300);
+    }
+
+    .page-btn.active {
+      background: var(--teal-600);
+      color: #ffffff;
+      border-color: var(--teal-600);
+      font-weight: 700;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Mobile media queries */
+    @media (max-width: 1024px) {
+      .admin-sidebar {
+        transform: translateX(-100%);
+      }
+      .admin-sidebar.open {
+        transform: translateX(0);
+      }
+      .admin-main-wrap {
+        margin-left: 0;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .topbar-search {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SIDEBAR NAVIGATION
+       ════════════════════════════════════════════════════════════════ -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="assets/images/clinic-logo-circle.png" alt="PCC Logo">
+      <div class="sidebar-brand-text">
+        <div class="brand-title">Prime Care Clinic</div>
+        <div class="brand-subtitle">HMS Management Portal</div>
+      </div>
+    </a>
+
+    <nav class="sidebar-nav">
+      <!-- CORE NAVIGATION -->
+      <div>
+        <div class="nav-section-title">Core Operations</div>
+        <div class="nav-group">
+          <button class="nav-item-btn active" data-tab="tab-dashboard">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-appointments">
+            <span class="nav-icon">📅</span>
+            <span>Appointments</span>
+            <span class="nav-badge live" id="sidebar-appts-badge">Live</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-patients">
+            <span class="nav-icon">👥</span>
+            <span>Patients</span>
+            <span class="nav-badge live">Live</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-reception">
+            <span class="nav-icon">🩺</span>
+            <span>Reception Check-in</span>
+            <span class="nav-badge live">Live</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-consultations">
+            <span class="nav-icon">🩺</span>
+            <span>Consultations</span>
+            <span class="nav-badge live">Live</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-doctors">
+            <span class="nav-icon">👨‍⚕️</span>
+            <span>Doctors & Roster</span>
+            <span class="nav-badge live">Live</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CLINICAL MODULES -->
+      <div>
+        <div class="nav-section-title">Clinical Departments</div>
+        <div class="nav-group">
+          <button class="nav-item-btn" data-tab="tab-laboratory" data-allowed-role="LAB_TECHNICIAN" style="display: none;">
+            <span class="nav-icon">🧪</span>
+            <span>Laboratory</span>
+            <span class="nav-badge live">Queue</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-radiology" data-allowed-role="RADIOLOGY_TECHNICIAN" style="display: none;">
+            <span class="nav-icon">🩻</span>
+            <span>Radiology</span>
+            <span class="nav-badge live">Queue</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-pharmacy">
+            <span class="nav-icon">💊</span>
+            <span>Pharmacy</span>
+            <span class="nav-badge pending">Planned</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FINANCE & ADMIN -->
+      <div>
+        <div class="nav-section-title">Administration</div>
+        <div class="nav-group">
+          <button class="nav-item-btn" data-tab="tab-billing">
+            <span class="nav-icon">💳</span>
+            <span>Billing & Invoices</span>
+            <span class="nav-badge pending">Planned</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-staff">
+            <span class="nav-icon">🛡️</span>
+            <span>Staff & Roles</span>
+            <span class="nav-badge live">Live</span>
+          </button>
+          <button class="nav-item-btn" data-tab="tab-settings">
+            <span class="nav-icon">⚙️</span>
+            <span>System Settings</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div style="font-size: 0.75rem; color: #94a3b8;">
+        PrimeCare v1.0.0<br>PostgreSQL Prisma API
+      </div>
+      <a href="index.html" style="color: var(--teal-50); font-size: 0.75rem; text-decoration: none;" title="Go to website">Website ↗</a>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MAIN WRAPPER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="admin-main-wrap">
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobile-sidebar-toggle" aria-label="Toggle navigation">☰</button>
+        <div class="topbar-search">
+          <span class="topbar-search-icon">🔍</span>
+          <input type="text" id="global-search-input" placeholder="Search appointments or patients...">
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="api-badge" id="api-status-pill">
+          <span class="api-dot"></span>
+          <span id="api-status-label">PostgreSQL: Connected</span>
+        </div>
+
+        <div class="user-pill">
+          <div class="user-avatar" id="user-avatar-initials">AD</div>
+          <div class="user-info">
+            <div class="user-name" id="user-display-name">Administrator</div>
+            <div class="user-role" id="user-display-role">ADMIN</div>
+          </div>
+        </div>
+
+        <button class="btn-topbar-logout" id="btn-portal-logout" title="End authenticated session">
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Canvas -->
+    <main class="admin-content">
+
+      <!-- ── TAB 1: DASHBOARD OVERVIEW ──────────────────────────────── -->
+      <section id="tab-dashboard" class="admin-tab-pane">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Executive Dashboard</h1>
+            <p class="page-desc">Prime Care Clinic & Diabetes Center — Clinical Operations & Daily Patient Flow</p>
+          </div>
+          <div class="header-action-group">
+            <button class="action-btn primary" id="btn-dashboard-refresh">↻ Refresh Live Data</button>
+            <a href="appointment.html" target="_blank" class="action-btn">+ New Patient Booking</a>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Total Appointments</span>
+            <div class="metric-num" id="stat-total-val">0</div>
+          </div>
+          <div class="metric-card teal">
+            <span class="metric-label">Today's Visits</span>
+            <div class="metric-num" id="stat-today-val" style="color: var(--teal-600);">0</div>
+          </div>
+          <div class="metric-card amber">
+            <span class="metric-label">Pending Review</span>
+            <div class="metric-num" id="stat-pending-val" style="color: #d97706;">0</div>
+          </div>
+          <div class="metric-card emerald">
+            <span class="metric-label">Confirmed Slots</span>
+            <div class="metric-num" id="stat-confirmed-val" style="color: #059669;">0</div>
+          </div>
+          <div class="metric-card indigo">
+            <span class="metric-label">Completed Consultations</span>
+            <div class="metric-num" id="stat-completed-val" style="color: #4f46e5;">0</div>
+          </div>
+          <div class="metric-card rose">
+            <span class="metric-label">Cancelled</span>
+            <div class="metric-num" id="stat-cancelled-val" style="color: #e11d48;">0</div>
+          </div>
+        </div>
+
+        <!-- Quick Summary & Today's Schedule -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="margin: 0; font-size: 1.1rem; color: var(--navy-900);">Recent Appointment Requests</h3>
+              <button class="action-btn" onclick="switchTab('tab-appointments')">View All →</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Slot</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-tbody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem; color: var(--navy-900);">Practicing Physician</h3>
+            <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem;">
+              <img src="assets/images/doctor-farhan-square.jpg" alt="Dr Farhan" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--teal-600);">
+              <div>
+                <h4 style="margin: 0; font-size: 0.95rem; color: var(--navy-900);">Dr. Muhammad Farhan Khan</h4>
+                <div style="font-size: 0.75rem; color: var(--teal-600); font-weight: 600;">Consulting Physician</div>
+                <div style="font-size: 0.7rem; color: #64748b;">Schedule: 5:30 PM – 10:00 PM</div>
+              </div>
+            </div>
+            <div style="border-top: 1px solid var(--gray-200); padding-top: 0.75rem; font-size: 0.8125rem; color: var(--gray-600);">
+              <p style="margin: 0 0 0.5rem 0;">✓ Verified Practitioner</p>
+              <p style="margin: 0 0 0.5rem 0;">✓ Primary Care & Diabetes</p>
+              <p style="margin: 0;">✓ Tulsa Road, Lalazar</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 2: APPOINTMENTS MANAGEMENT ────────────────────────── -->
+      <section id="tab-appointments" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Appointment Management</h1>
+            <p class="page-desc">Live PostgreSQL database records with duplicate prevention and rescheduling controls.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="action-btn primary" id="btn-appts-refresh">↻ Refresh Database</button>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-card">
+          <div class="filter-item">
+            <label class="filter-label">Filter Status</label>
+            <select id="appt-filter-status" class="filter-select">
+              <option value="ALL">All Statuses</option>
+              <option value="PENDING">Pending Review</option>
+              <option value="CONFIRMED">Confirmed</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label class="filter-label">Filter Doctor</label>
+            <select id="appt-filter-doctor" class="filter-select">
+              <option value="ALL">All Physicians</option>
+              <option value="Dr. Muhammad Farhan Khan">Dr. Muhammad Farhan Khan</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label class="filter-label">Filter Date</label>
+            <input type="date" id="appt-filter-date" class="filter-input">
+          </div>
+
+          <button class="action-btn" id="btn-reset-filters" style="height: 38px;">Clear Filters</button>
+        </div>
+
+        <!-- Table Card -->
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Patient Name</th>
+                  <th>Contact</th>
+                  <th>Consultation Service</th>
+                  <th>Doctor</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="appts-tbody">
+                <!-- Dynamically populated from backend -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── RECEPTION CHECK-IN ────────────────────────────────────── -->
+      <section id="tab-reception" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Reception Check-in</h1>
+            <p class="page-desc">Check in a registered patient for an appointment or as a walk-in.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="action-btn primary" id="btn-reception-refresh">↻ Refresh Visits</button>
+          </div>
+        </div>
+
+        <div class="data-table-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+          <h2 style="margin: 0 0 0.5rem; color: var(--navy-900); font-size: 1.1rem;">Check in a patient</h2>
+          <p style="margin: 0 0 1rem; color: var(--gray-600); font-size: 0.875rem;">Find a patient by MRN, name, or phone. Walk-ins must already be registered.</p>
+          <div style="max-width: 680px;">
+            <label class="filter-label" for="reception-patient-search">Find patient</label>
+            <input type="search" id="reception-patient-search" class="filter-input" autocomplete="off" placeholder="Enter MRN, patient name, or phone number">
+            <div id="reception-search-results" role="listbox" aria-label="Matching patients" style="margin-top: 0.5rem;"></div>
+            <div id="reception-selected-patient" aria-live="polite" style="margin-top: 0.75rem;"></div>
+            <div style="margin-top: 1rem;">
+              <label class="filter-label" for="reception-appointment-select">Appointment (optional)</label>
+              <select id="reception-appointment-select" class="filter-select" style="width: 100%;" disabled>
+                <option value="">Walk-in / no appointment</option>
+              </select>
+            </div>
+            <div id="reception-checkin-message" role="status" aria-live="polite" style="margin-top: 0.75rem;"></div>
+            <button type="button" class="action-btn primary" id="btn-reception-checkin" style="margin-top: 1rem;" disabled>Check in patient</button>
+          </div>
+        </div>
+
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Visit Number</th>
+                  <th>Patient Name</th>
+                  <th>MRN</th>
+                  <th>Check-in Time</th>
+                  <th>Visit Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="reception-visits-tbody">
+                <tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">Loading reception visits...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DOCTOR CONSULTATION & PATIENT HISTORY ─────────────────── -->
+      <section id="tab-consultations" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Doctor Consultation</h1>
+            <p class="page-desc">Open checked-in visits, review the patient's consultation history, and record findings.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="action-btn primary" id="btn-consultations-refresh">↻ Refresh Visits</button>
+          </div>
+        </div>
+
+        <div class="data-table-card" style="margin-bottom: 1.5rem;">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Visit Number</th>
+                  <th>Patient</th>
+                  <th>MRN</th>
+                  <th>Check-in Time</th>
+                  <th>Visit Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="consultation-visits-tbody">
+                <tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">Loading checked-in visits...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="consultation-workspace" style="display: none; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 1.5rem; align-items: start;">
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <div id="consultation-visit-summary" style="margin-bottom: 1.25rem;"></div>
+            <div id="consultation-existing-record" style="display: none;"></div>
+            <form id="consultation-form">
+              <div class="form-group">
+                <label class="form-label" for="consultation-chief-complaint">Chief complaint *</label>
+                <textarea id="consultation-chief-complaint" class="form-control" rows="2" maxlength="2000" required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-present-illness">Present illness</label>
+                <textarea id="consultation-present-illness" class="form-control" rows="3" maxlength="10000"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-medical-history">Relevant medical history</label>
+                <textarea id="consultation-medical-history" class="form-control" rows="3" maxlength="10000"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-allergies">Allergies</label>
+                <textarea id="consultation-allergies" class="form-control" rows="2" maxlength="10000" placeholder="Record known allergies or state none known"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-examination">Examination findings</label>
+                <textarea id="consultation-examination" class="form-control" rows="3" maxlength="10000"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-provisional-diagnosis">Provisional diagnosis</label>
+                <textarea id="consultation-provisional-diagnosis" class="form-control" rows="2" maxlength="10000"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-final-diagnosis">Final diagnosis</label>
+                <textarea id="consultation-final-diagnosis" class="form-control" rows="2" maxlength="10000"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="consultation-notes">Consultation notes</label>
+                <textarea id="consultation-notes" class="form-control" rows="3" maxlength="10000"></textarea>
+              </div>
+              <div id="consultation-form-message" role="status" aria-live="polite" style="margin-bottom: 0.75rem;"></div>
+              <button type="submit" class="action-btn primary" id="btn-save-consultation">Save consultation</button>
+            </form>
+            <section aria-labelledby="diagnostic-order-heading" style="border-top: 1px solid var(--gray-200); margin-top: 1.5rem; padding-top: 1.25rem;">
+              <h2 id="diagnostic-order-heading" style="margin: 0 0 1rem; color: var(--navy-900); font-size: 1.1rem;">Diagnostic Orders</h2>
+              <form id="diagnostic-order-form">
+                <div class="form-group">
+                  <label class="form-label" for="diagnostic-order-type">Order type *</label>
+                  <select id="diagnostic-order-type" class="form-control" required>
+                    <option value="LAB">Lab</option>
+                    <option value="RADIOLOGY">Radiology</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="diagnostic-order-test-name">Test name *</label>
+                  <input id="diagnostic-order-test-name" class="form-control" type="text" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="diagnostic-order-indication">Clinical indication (optional)</label>
+                  <textarea id="diagnostic-order-indication" class="form-control" rows="2" maxlength="2000"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="diagnostic-order-notes">Notes (optional)</label>
+                  <textarea id="diagnostic-order-notes" class="form-control" rows="2" maxlength="2000"></textarea>
+                </div>
+                <div id="diagnostic-order-message" role="status" aria-live="polite" style="margin-bottom: 0.75rem;"></div>
+                <button type="submit" class="action-btn primary" id="btn-save-diagnostic-order" disabled>Place diagnostic order</button>
+              </form>
+              <div id="diagnostic-order-list-message" role="status" aria-live="polite" style="margin: 1rem 0 0.5rem;"></div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Test name</th>
+                      <th>Status</th>
+                      <th>Created</th>
+                    </tr>
+                  </thead>
+                  <tbody id="diagnostic-orders-tbody">
+                    <tr><td colspan="4" style="text-align: center; padding: 1rem; color: #64748b;">Select a visit to view diagnostic orders.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+          <aside class="data-table-card" style="padding: 1.5rem;">
+            <h2 style="margin: 0 0 1rem; color: var(--navy-900); font-size: 1.1rem;">Patient history</h2>
+            <div id="consultation-patient-history" aria-live="polite" style="font-size: 0.875rem; color: var(--gray-700);">Select a visit to review history.</div>
+          </aside>
+        </div>
+        <section id="doctor-diagnostic-results" class="data-table-card" aria-labelledby="doctor-diagnostic-results-heading" style="padding: 1.5rem; margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <div>
+              <h2 id="doctor-diagnostic-results-heading" style="margin: 0 0 0.35rem; color: var(--navy-900); font-size: 1.1rem;">Diagnostic Results</h2>
+              <p style="margin: 0; color: var(--gray-600);">Results for orders placed by your account for the selected visit.</p>
+            </div>
+            <button type="button" class="action-btn" id="btn-doctor-results-refresh" disabled>Refresh results</button>
+          </div>
+          <div id="doctor-diagnostic-results-message" role="status" aria-live="polite" style="margin: 1rem 0 0.5rem;">Open a visit to view your diagnostic results.</div>
+          <div id="doctor-diagnostic-results-list" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <!-- ── TAB 3: PATIENTS REGISTRATION & MASTER DIRECTORY ──────── -->
+      <section id="tab-patients" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Patient Registration & Directory</h1>
+            <p class="page-desc">Comprehensive patient registry with collision-free MRN assignment, demographics, and audit tracking.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="action-btn" id="btn-patients-refresh">↻ Refresh Directory</button>
+            <button type="button" class="action-btn primary" id="btn-open-register-patient" onclick="openPatientRegisterModal(); return false;">+ Register New Patient</button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="filter-card" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 1rem; align-items: flex-end;">
+          <div>
+            <label class="filter-label">Search Patient Records</label>
+            <input type="text" id="patient-search-input" class="filter-input" placeholder="Search by MRN (PCC-...), Name, or Phone...">
+          </div>
+
+          <div>
+            <label class="filter-label">Gender</label>
+            <select id="patient-filter-gender" class="filter-select">
+              <option value="ALL">All Genders</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="filter-label">Account Status</label>
+            <select id="patient-filter-status" class="filter-select">
+              <option value="all">All Patients</option>
+              <option value="active" selected>Active Only</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="filter-label">Rows per Page</label>
+            <select id="patient-filter-limit" class="filter-select">
+              <option value="10" selected>10 Records</option>
+              <option value="25">25 Records</option>
+              <option value="50">50 Records</option>
+            </select>
+          </div>
+
+          <button class="action-btn" id="btn-patient-reset-filters" style="height: 38px;">Reset</button>
+        </div>
+
+        <!-- Patient Directory Table Card -->
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>MRN</th>
+                  <th>Patient Name</th>
+                  <th>Age &amp; DOB</th>
+                  <th>Gender</th>
+                  <th>Contact Phone</th>
+                  <th>Address / City</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="patients-master-tbody">
+                <tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">Loading registered patient roster...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Bar -->
+          <div class="pagination-bar" id="patient-pagination-bar" style="display: none;">
+            <div id="patient-pagination-info">Showing 0 of 0 patients</div>
+            <div class="pagination-controls" id="patient-pagination-controls">
+              <!-- Dynamically populated page buttons -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 4: DOCTORS & ROSTER ────────────────────────────────── -->
+      <section id="tab-doctors" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Doctors & Clinical Schedules</h1>
+            <p class="page-desc">Consulting physicians and practicing timings at Prime Care Clinic.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem;">
+              <img src="assets/images/doctor-farhan-portrait.jpg" alt="Dr Farhan" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; border: 2px solid var(--teal-600);">
+              <div>
+                <span class="status-pill confirmed" style="font-size: 10px; margin-bottom: 4px;">Active In Practice</span>
+                <h3 style="margin: 0; font-size: 1.15rem; color: var(--navy-900);">Dr. Muhammad Farhan Khan</h3>
+                <div style="font-size: 0.8125rem; color: var(--teal-600); font-weight: 600;">Consulting Physician & Diabetologist</div>
+                <div style="font-size: 0.75rem; color: #64748b;">PMC / Affiliation Confirmed</div>
+              </div>
+            </div>
+            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 1rem; font-size: 0.8125rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span style="color: #64748b;">Schedule Days:</span>
+                <strong>Monday – Thursday, Friday, Saturday</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span style="color: #64748b;">Operating Hours:</span>
+                <strong>5:30 PM – 10:00 PM (Fri 5:00 PM)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span style="color: #64748b;">Consultation Interval:</span>
+                <strong>20 Minutes per Patient</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #64748b;">Location:</span>
+                <strong>Main Tulsa Road, Lalazar</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 5: LABORATORY WORKSPACE ────────────────────────────── -->
+      <section id="tab-laboratory" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Laboratory Orders</h1>
+            <p class="page-desc">Review lab orders, record processing status, and submit findings.</p>
+          </div>
+          <div class="header-action-group">
+            <button type="button" class="action-btn primary" id="btn-lab-queue-refresh">↻ Refresh Queue</button>
+          </div>
+        </div>
+        <div id="lab-queue-message" role="status" aria-live="polite" style="margin-bottom: 0.75rem;">Loading laboratory orders...</div>
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Visit</th><th>Test</th><th>Clinical indication</th><th>Status</th><th>Ordered</th><th>Action</th></tr>
+              </thead>
+              <tbody id="lab-queue-tbody">
+                <tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">Loading laboratory orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <section id="lab-order-detail" class="data-table-card" aria-labelledby="lab-order-detail-heading" style="display: none; padding: 1.5rem; margin-top: 1.5rem;">
+          <h2 id="lab-order-detail-heading" style="margin: 0 0 1rem; color: var(--navy-900); font-size: 1.1rem;">Lab order details</h2>
+          <div id="lab-order-detail-content"></div>
+          <div id="lab-order-action-message" role="status" aria-live="polite" style="margin: 1rem 0;"></div>
+          <div id="lab-order-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;"></div>
+          <form id="lab-result-form" style="display: none; margin-top: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="lab-result-findings">Findings *</label>
+              <textarea id="lab-result-findings" class="form-control" rows="4" maxlength="10000" required></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lab-result-interpretation">Interpretation (optional)</label>
+              <textarea id="lab-result-interpretation" class="form-control" rows="3" maxlength="5000"></textarea>
+            </div>
+            <button type="submit" class="action-btn primary" id="btn-submit-lab-result">Submit findings</button>
+          </form>
+          <div id="lab-saved-result" aria-live="polite" style="display: none; margin-top: 1rem;"></div>
+        </section>
+      </section>
+
+      <!-- ── TAB 6: RADIOLOGY WORKSPACE ─────────────────────────────── -->
+      <section id="tab-radiology" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Radiology Orders</h1>
+            <p class="page-desc">Review imaging orders, record processing status, and submit findings.</p>
+          </div>
+          <div class="header-action-group">
+            <button type="button" class="action-btn primary" id="btn-radiology-queue-refresh">↻ Refresh Queue</button>
+          </div>
+        </div>
+        <div id="radiology-queue-message" role="status" aria-live="polite" style="margin-bottom: 0.75rem;">Loading radiology orders...</div>
+        <div class="data-table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Visit</th><th>Examination</th><th>Clinical indication</th><th>Status</th><th>Ordered</th><th>Action</th></tr>
+              </thead>
+              <tbody id="radiology-queue-tbody">
+                <tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">Loading radiology orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <section id="radiology-order-detail" class="data-table-card" aria-labelledby="radiology-order-detail-heading" style="display: none; padding: 1.5rem; margin-top: 1.5rem;">
+          <h2 id="radiology-order-detail-heading" style="margin: 0 0 1rem; color: var(--navy-900); font-size: 1.1rem;">Radiology order details</h2>
+          <div id="radiology-order-detail-content"></div>
+          <div id="radiology-order-action-message" role="status" aria-live="polite" style="margin: 1rem 0;"></div>
+          <div id="radiology-order-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;"></div>
+          <form id="radiology-result-form" style="display: none; margin-top: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="radiology-result-findings">Findings *</label>
+              <textarea id="radiology-result-findings" class="form-control" rows="4" maxlength="10000" required></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="radiology-result-interpretation">Interpretation (optional)</label>
+              <textarea id="radiology-result-interpretation" class="form-control" rows="3" maxlength="5000"></textarea>
+            </div>
+            <button type="submit" class="action-btn primary" id="btn-submit-radiology-result">Submit findings</button>
+          </form>
+          <div id="radiology-saved-result" aria-live="polite" style="display: none; margin-top: 1rem;"></div>
+        </section>
+      </section>
+
+      <!-- ── TAB 7: PHARMACY MODULE (STRUCTURED PLACEHOLDER) ────────── -->
+      <section id="tab-pharmacy" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Clinic Pharmacy & Dispensary</h1>
+            <p class="page-desc">Chronic diabetes medications, insulin supplies, and glucometer inventory.</p>
+          </div>
+        </div>
+
+        <div class="module-placeholder-card">
+          <div class="module-notice-badge">ℹ️ Pharmacy Module — Backend API Endpoint Pending</div>
+          <h3 style="color: var(--navy-900); margin: 0 0 0.5rem 0;">Pharmacy Dispensation Roster</h3>
+          <p style="color: #64748b; max-width: 620px; margin: 0 auto 1.5rem; font-size: 0.875rem;">
+            Inventory tracking for essential primary care pharmaceuticals, oral hypoglycemic agents, and glycemic test kits.
+          </p>
+          <div class="data-table-card" style="text-align: left; max-width: 780px; margin: 0 auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Item Code</th>
+                  <th>Medication / Supply</th>
+                  <th>Therapeutic Class</th>
+                  <th>Packaging</th>
+                  <th>Stock Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>MED-001</code></td>
+                  <td><strong>Metformin Hydrochloride 500mg</strong></td>
+                  <td>Biguanide / Antidiabetic</td>
+                  <td>Strip of 10 Tablets</td>
+                  <td><span class="status-pill confirmed">In Stock</span></td>
+                </tr>
+                <tr>
+                  <td><code>MED-002</code></td>
+                  <td><strong>Glimepiride 2mg</strong></td>
+                  <td>Sulfonylurea</td>
+                  <td>Strip of 10 Tablets</td>
+                  <td><span class="status-pill confirmed">In Stock</span></td>
+                </tr>
+                <tr>
+                  <td><code>MED-003</code></td>
+                  <td><strong>Blood Glucose Test Strips (50s)</strong></td>
+                  <td>Diagnostic Consumable</td>
+                  <td>Box of 50 Strips</td>
+                  <td><span class="status-pill confirmed">In Stock</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 8: BILLING MODULE (STRUCTURED PLACEHOLDER) ─────────── -->
+      <section id="tab-billing" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Billing & Patient Invoices</h1>
+            <p class="page-desc">Consultation receipts, invoice logs, and payment method reconciliations.</p>
+          </div>
+        </div>
+
+        <div class="module-placeholder-card">
+          <div class="module-notice-badge">ℹ️ Billing Module — Backend API Endpoint Pending</div>
+          <h3 style="color: var(--navy-900); margin: 0 0 0.5rem 0;">Financial Receipts & Fee Ledger</h3>
+          <p style="color: #64748b; max-width: 620px; margin: 0 auto 1.5rem; font-size: 0.875rem;">
+            Records patient fee transactions for consultations, diabetes checkups, and follow-up visits in PKR.
+          </p>
+          <div class="data-table-card" style="text-align: left; max-width: 780px; margin: 0 auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Fee Category</th>
+                  <th>Standard Fee (PKR)</th>
+                  <th>Payment Modes Accepted</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Initial Physician Consultation</strong></td>
+                  <td>PKR 1,500</td>
+                  <td>Cash, JazzCash, EasyPaisa, Debit Card</td>
+                </tr>
+                <tr>
+                  <td><strong>Diabetes Follow-up & Titration</strong></td>
+                  <td>PKR 1,000</td>
+                  <td>Cash, JazzCash, EasyPaisa</td>
+                </tr>
+                <tr>
+                  <td><strong>Random Blood Glucose Screening</strong></td>
+                  <td>PKR 200</td>
+                  <td>Cash</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 9: STAFF & ROLES ───────────────────────────────────── -->
+      <section id="tab-staff" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Staff Credentials & Role-Based Access</h1>
+            <p class="page-desc">Cryptographically authenticated personnel authorized for system access.</p>
+          </div>
+        </div>
+
+        <div class="data-table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Access Level</th>
+                <th>Active Session</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Clinic Administrator</strong></td>
+                <td><code>admin@primecare.pk</code></td>
+                <td><span class="status-pill confirmed">ADMIN</span></td>
+                <td>Full HMS Administrative Permissions</td>
+                <td><span style="color: #059669; font-weight: 600;">● Active (Current User)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Dr. Muhammad Farhan Khan</strong></td>
+                <td><code>doctor@primecare.pk</code></td>
+                <td><span class="status-pill" style="background: var(--teal-50); color: var(--teal-600);">DOCTOR</span></td>
+                <td>Clinical Roster & Patient Notes Access</td>
+                <td><span style="color: #64748b;">Registered Staff</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── TAB 10: SETTINGS ──────────────────────────────────────── -->
+      <section id="tab-settings" class="admin-tab-pane" style="display: none;">
+        <div class="page-header-box">
+          <div>
+            <h1 class="page-title">Clinic Configuration & System Settings</h1>
+            <p class="page-desc">Clinic identity, operating hours, and verified facility parameters.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem; color: var(--navy-900);">Facility Details</h3>
+            <div style="font-size: 0.875rem; line-height: 1.8;">
+              <div><strong>Facility Name:</strong> Prime Care Clinic & Diabetes Center</div>
+              <div><strong>Official Emblem:</strong> PCC Monogram (Verified)</div>
+              <div><strong>Address:</strong> Main Tulsa Road, Lalazar, Rawalpindi Cantt</div>
+              <div><strong>Reception Phone:</strong> +92 332 5494578</div>
+              <div><strong>Consulting Physician:</strong> Dr. Muhammad Farhan Khan (Verified)</div>
+            </div>
+          </div>
+
+          <div class="data-table-card" style="padding: 1.5rem;">
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem; color: var(--navy-900);">Database & Infrastructure</h3>
+            <div style="font-size: 0.875rem; line-height: 1.8;">
+              <div><strong>Database Engine:</strong> PostgreSQL 18 via Prisma ORM</div>
+              <div><strong>API Endpoint:</strong> <code>http://localhost:5000/api</code></div>
+              <div><strong>Authentication:</strong> Cryptographic JWT (8-hour expiry)</div>
+              <div><strong>Password Hashing:</strong> Bcrypt (10 salt rounds)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MODALS: VIEW DETAIL & RESCHEDULE
+       ════════════════════════════════════════════════════════════════ -->
+  <!-- View Details Modal -->
+  <div class="modal-backdrop" id="modal-view-detail">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Appointment Specification</h3>
+        <button class="action-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <div id="modal-detail-content" style="font-size: 0.875rem; line-height: 1.8;">
+        <!-- Dynamic -->
+      </div>
+      <div style="text-align: right; margin-top: 1.5rem;">
+        <button class="action-btn" onclick="closeAllModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div class="modal-backdrop" id="modal-reschedule">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Reschedule Consultation</h3>
+        <button class="action-btn" onclick="closeAllModals()">✕</button>
+      </div>
+      <form id="reschedule-submit-form">
+        <input type="hidden" id="modal-reschedule-id">
+        <div style="margin-bottom: 1rem;">
+          <label class="filter-label">Target Appointment Date</label>
+          <input type="date" id="modal-reschedule-date" class="filter-input" required>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label class="filter-label">Available Time Slot</label>
+          <select id="modal-reschedule-time" class="filter-select" required>
+            <option value="">Select a date first</option>
+          </select>
+        </div>
+        <div id="reschedule-error" style="color: #e11d48; font-size: 0.8125rem; margin-bottom: 1rem; display: none;"></div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="action-btn" onclick="closeAllModals()">Cancel</button>
+          <button type="submit" class="action-btn primary" id="btn-save-reschedule">Confirm Reschedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       PATIENT REGISTRATION SYSTEM MODALS
+       ════════════════════════════════════════════════════════════════ -->
+
+  <!-- 1. Register New Patient Modal -->
+  <div class="modal-backdrop" id="modal-register-patient">
+    <div class="modal-box modal-box-large">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Register New Patient</h3>
+          <p style="font-size: 0.75rem; color: #64748b; margin: 0.2rem 0 0 0;">Assigns a unique MRN and creates permanent clinical electronic medical record.</p>
+        </div>
+        <button class="action-btn" onclick="closeAllModals()">✕</button>
+      </div>
+
+      <!-- Duplicate Patient Alert Banner -->
+      <div id="patient-duplicate-banner" class="alert-box warning" style="display: none;">
+        <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
+          <span style="font-size: 1.25rem;">⚠️</span>
+          <div>
+            <strong>Possible Duplicate Patient Detected:</strong>
+            <div id="patient-duplicate-msg" style="margin: 0.25rem 0 0.5rem 0;"></div>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; color: #78350f;">
+              <input type="checkbox" id="patient-force-duplicate-chk">
+              Confirm &amp; Proceed (Distinct patient or family member sharing phone)
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Error Alert -->
+      <div id="patient-reg-error" class="alert-box danger" style="display: none;"></div>
+
+      <form id="patient-register-form">
+        <input type="hidden" id="reg-link-appointment-id">
+        <div id="reg-linking-notice" style="display: none; background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 0.6rem 0.85rem; border-radius: 8px; font-size: 0.75rem; margin-bottom: 1rem;">
+          🔗 <strong>Appointment Link Active:</strong> This registration will link appointment <code id="reg-linking-appt-id">#</code> to the newly generated MRN.
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Full Patient Name *</label>
+            <input type="text" id="reg-patient-name" class="form-control" placeholder="e.g. Tariq Mehmood" required minlength="2">
+            <div class="form-hint">Official identification or clinical record name</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Biological Sex *</label>
+            <select id="reg-patient-gender" class="form-control" required>
+              <option value="">-- Select Sex for Clinical Care --</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other / Non-binary</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Primary Mobile / Contact Phone *</label>
+            <input type="tel" id="reg-patient-phone" class="form-control" placeholder="0300-1234567 or +92 3XX XXXXXXX" required>
+            <div class="form-hint">Used for appointment confirmation SMS and MRN lookup</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address (Optional)</label>
+            <input type="email" id="reg-patient-email" class="form-control" placeholder="patient@example.com">
+          </div>
+        </div>
+
+        <!-- Age & DOB Distinction -->
+        <div class="form-group" style="background: var(--gray-50); border: 1px solid var(--gray-200); padding: 1rem; border-radius: 10px;">
+          <label class="form-label" style="margin-bottom: 0.5rem;">Age / Date of Birth Specification *</label>
+          <div class="segment-switch">
+            <button type="button" class="segment-btn active" id="btn-toggle-exact-dob" onclick="toggleAgeMode(false)">Exact Date of Birth</button>
+            <button type="button" class="segment-btn" id="btn-toggle-est-age" onclick="toggleAgeMode(true)">Estimated Age (Years)</button>
+          </div>
+
+          <div id="section-exact-dob">
+            <input type="date" id="reg-patient-dob" class="form-control" style="max-width: 300px;">
+            <div class="form-hint">Calendar date of birth as recorded on CNIC or birth certificate.</div>
+          </div>
+
+          <div id="section-estimated-age" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; max-width: 300px;">
+              <input type="number" id="reg-patient-est-age" class="form-control" min="0" max="130" placeholder="e.g. 52">
+              <span style="font-size: 0.875rem; font-weight: 600; color: #64748b;">Years</span>
+            </div>
+            <div class="form-hint">Used when exact birthdate is unknown. Approximate birth year is computed automatically for clinical records.</div>
+          </div>
+        </div>
+
+        <!-- Additional Clinical & Contact Details -->
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Blood Group (Optional)</label>
+            <select id="reg-patient-blood" class="form-control">
+              <option value="">-- Select Blood Group --</option>
+              <option value="A+">A Positive (A+)</option>
+              <option value="A-">A Negative (A-)</option>
+              <option value="B+">B Positive (B+)</option>
+              <option value="B-">B Negative (B-)</option>
+              <option value="AB+">AB Positive (AB+)</option>
+              <option value="AB-">AB Negative (AB-)</option>
+              <option value="O+">O Positive (O+)</option>
+              <option value="O-">O Negative (O-)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">City of Residence</label>
+            <input type="text" id="reg-patient-city" class="form-control" value="Rawalpindi">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Residential Address (Optional)</label>
+          <input type="text" id="reg-patient-address" class="form-control" placeholder="House / Street, Area, Rawalpindi">
+        </div>
+
+        <!-- Emergency Contact -->
+        <div style="border-top: 1px dashed var(--gray-300); padding-top: 1rem; margin-top: 1rem;">
+          <div style="font-size: 0.8125rem; font-weight: 700; color: var(--navy-900); margin-bottom: 0.75rem;">Emergency Contact (Optional)</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Contact Person Name</label>
+              <input type="text" id="reg-patient-ec-name" class="form-control" placeholder="e.g. Aisha Mehmood">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Relationship &amp; Phone</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="reg-patient-ec-rel" class="form-control" placeholder="Relation (Spouse, Son)" style="width: 45%;">
+                <input type="tel" id="reg-patient-ec-phone" class="form-control" placeholder="Phone Number" style="width: 55%;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clinical Notes -->
+        <div class="form-group">
+          <label class="form-label">Initial Clinical Notes or Allergies (Optional)</label>
+          <textarea id="reg-patient-notes" class="form-control" rows="2" placeholder="e.g. Known hypertensive, Type 2 Diabetic on Metformin, Penicillin allergy..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+          <button type="button" class="action-btn" onclick="closeAllModals()">Cancel</button>
+          <button type="submit" class="action-btn primary" id="btn-submit-register-patient">
+            <span>Register &amp; Generate MRN</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. View Patient Profile Modal -->
+  <div class="modal-backdrop" id="modal-patient-profile">
+    <div class="modal-box modal-box-large">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div id="profile-avatar" style="width: 44px; height: 44px; border-radius: 50%; background: var(--teal-600); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem;">PT</div>
+          <div>
+            <h3 class="modal-title" id="profile-patient-name">Patient Profile</h3>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.2rem;">
+              <span class="mrn-badge" id="profile-mrn">PCC-2026-00000</span>
+              <span class="status-pill confirmed" id="profile-status-pill">Active</span>
+            </div>
+          </div>
+        </div>
+        <button class="action-btn" onclick="closeAllModals()">✕</button>
+      </div>
+
+      <div id="profile-modal-content">
+        <!-- Demographics Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; background: var(--gray-50); border: 1px solid var(--gray-200); padding: 1.25rem; border-radius: 10px; margin-bottom: 1.25rem; font-size: 0.875rem;">
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Age &amp; Date of Birth</div>
+            <div id="profile-dob-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Biological Sex</div>
+            <div id="profile-gender-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Contact Phone</div>
+            <div id="profile-phone-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Email Address</div>
+            <div id="profile-email-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Blood Group</div>
+            <div id="profile-blood-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+          <div>
+            <div style="color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700;">Residential Address</div>
+            <div id="profile-address-val" style="font-weight: 600; margin-top: 2px;">--</div>
+          </div>
+        </div>
+
+        <!-- Emergency Contact & Clinical Notes -->
+        <div class="form-grid-2" style="margin-bottom: 1.25rem;">
+          <div class="data-table-card" style="padding: 1rem;">
+            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--navy-900); margin-bottom: 0.5rem;">Emergency Contact</div>
+            <div id="profile-ec-val" style="font-size: 0.875rem; line-height: 1.6; color: var(--gray-700);">No emergency contact specified.</div>
+          </div>
+
+          <div class="data-table-card" style="padding: 1rem;">
+            <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--navy-900); margin-bottom: 0.5rem;">Clinical Notes &amp; Medical History</div>
+            <div id="profile-notes-val" style="font-size: 0.875rem; line-height: 1.6; color: var(--gray-700);">No special clinical notes.</div>
+          </div>
+        </div>
+
+        <!-- Audit Trail Card -->
+        <div class="audit-card" id="profile-audit-box" style="margin-bottom: 1.25rem;">
+          <!-- Dynamically populated audit details -->
+        </div>
+
+        <!-- Appointment History Section -->
+        <div style="margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4 style="margin: 0; font-size: 0.95rem; color: var(--navy-900);">Clinical Consultations &amp; Booking History</h4>
+          </div>
+          <div class="table-responsive" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--gray-200); border-radius: 8px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date &amp; Time</th>
+                  <th>Service</th>
+                  <th>Attending Physician</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="profile-appointments-tbody">
+                <tr><td colspan="4" style="text-align: center; color: #64748b; padding: 1.5rem;">No linked appointments found.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+        <button type="button" class="action-btn" onclick="closeAllModals()">Close Profile</button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="action-btn primary" id="btn-profile-edit-demographics">Edit Demographics</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Edit Patient Demographics Modal -->
+  <div class="modal-backdrop" id="modal-edit-patient">
+    <div class="modal-box modal-box-large">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Edit Patient Demographics</h3>
+          <p style="font-size: 0.75rem; color: #64748b; margin: 0.2rem 0 0 0;">All modifications will be logged in the electronic audit trail under your administrative account.</p>
+        </div>
+        <button class="action-btn" onclick="closeAllModals()">✕</button>
+      </div>
+
+      <div id="patient-edit-error" class="alert-box danger" style="display: none;"></div>
+
+      <form id="patient-edit-form">
+        <input type="hidden" id="edit-patient-id">
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Full Patient Name *</label>
+            <input type="text" id="edit-patient-name" class="form-control" required minlength="2">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Biological Sex *</label>
+            <select id="edit-patient-gender" class="form-control" required>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Primary Mobile Phone *</label>
+            <input type="tel" id="edit-patient-phone" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="edit-patient-email" class="form-control">
+          </div>
+        </div>
+
+        <!-- Age & DOB distinction in Edit -->
+        <div class="form-group" style="background: var(--gray-50); border: 1px solid var(--gray-200); padding: 1rem; border-radius: 10px;">
+          <label class="form-label" style="margin-bottom: 0.5rem;">Age / Date of Birth *</label>
+          <div class="segment-switch">
+            <button type="button" class="segment-btn active" id="btn-edit-toggle-exact" onclick="toggleEditAgeMode(false)">Exact Date of Birth</button>
+            <button type="button" class="segment-btn" id="btn-edit-toggle-est" onclick="toggleEditAgeMode(true)">Estimated Age (Years)</button>
+          </div>
+
+          <div id="section-edit-exact-dob">
+            <input type="date" id="edit-patient-dob" class="form-control" style="max-width: 300px;">
+          </div>
+
+          <div id="section-edit-est-age" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; max-width: 300px;">
+              <input type="number" id="edit-patient-est-age" class="form-control" min="0" max="130">
+              <span style="font-size: 0.875rem; font-weight: 600; color: #64748b;">Years</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Blood Group</label>
+            <select id="edit-patient-blood" class="form-control">
+              <option value="">-- Unspecified --</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Account Status</label>
+            <select id="edit-patient-active" class="form-control">
+              <option value="true">Active Patient</option>
+              <option value="false">Inactive / Archived</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Residential Address</label>
+          <input type="text" id="edit-patient-address" class="form-control">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Emergency Contact Name</label>
+            <input type="text" id="edit-patient-ec-name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Emergency Relationship &amp; Phone</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="text" id="edit-patient-ec-rel" class="form-control" placeholder="Relation" style="width: 45%;">
+              <input type="tel" id="edit-patient-ec-phone" class="form-control" placeholder="Phone" style="width: 55%;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Medical Notes</label>
+          <textarea id="edit-patient-notes" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; border-top: 1px solid var(--gray-200); padding-top: 1rem;">
+          <button type="button" class="action-btn" onclick="closeAllModals()">Cancel</button>
+          <button type="submit" class="action-btn primary" id="btn-submit-edit-patient">Save Demographic Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Prime Care Clinic Management Portal — Production Dashboard Controller
+     * Directly interacts with PostgreSQL through Node.js Express REST API
+     */
+    const API_BASE = 'http://localhost:5000/api';
+    let authToken = localStorage.getItem('pcc_auth_token') || sessionStorage.getItem('pcc_auth_token');
+    let currentUser = null;
+    let appointmentsList = [];
+    let selectedReceptionPatient = null;
+    let receptionSearchDebounce = null;
+    let receptionSearchRequestId = 0;
+    let selectedConsultationVisitId = null;
+    const selectedDepartmentOrders = { LAB: null, RADIOLOGY: null };
+
+    // Initialize application gatekeeper
+    document.addEventListener('DOMContentLoaded', () => {
+      checkDatabaseHealth();
+      setInterval(checkDatabaseHealth, 30000); // Periodic live database probe
+      enforceAuthentication();
+      setupSidebarNavigation();
+      setupSearchAndFilters();
+      setupPatientEventListeners();
+      setupReceptionEventListeners();
+      setupConsultationEventListeners();
+      setupDiagnosticDepartmentListeners();
+    });
+
+    // 1. Dedicated live database & API health verification probe (SELECT 1 via /api/health)
+    async function checkDatabaseHealth() {
+      const statusPill = document.getElementById('api-status-pill');
+      const statusLabel = document.getElementById('api-status-label');
+      if (!statusPill || !statusLabel) return false;
+
+      try {
+        const res = await fetch(`${API_BASE}/health`, { method: 'GET' });
+        const data = await res.json();
+
+        if (res.ok && data.database && data.database.connected === true) {
+          statusPill.style.background = '#ecfdf5';
+          statusPill.style.color = '#065f46';
+          statusPill.style.borderColor = '#a7f3d0';
+          const latency = data.database.latencyMs != null ? ` (${data.database.latencyMs}ms)` : '';
+          statusLabel.textContent = `PostgreSQL: Connected${latency}`;
+          statusPill.title = `Database Status: Healthy | Latency: ${data.database.latencyMs}ms | Provider: ${data.database.provider}`;
+          return true;
+        } else {
+          statusPill.style.background = '#fff1f2';
+          statusPill.style.color = '#be123c';
+          statusPill.style.borderColor = '#fecdd3';
+          const diag = data.database?.message || 'Database disconnected';
+          statusLabel.textContent = `PostgreSQL: Offline (${diag})`;
+          statusPill.title = `Database Diagnostic: ${diag}`;
+          return false;
+        }
+      } catch (err) {
+        statusPill.style.background = '#fff1f2';
+        statusPill.style.color = '#be123c';
+        statusPill.style.borderColor = '#fecdd3';
+        statusLabel.textContent = 'API & Database: Offline';
+        statusPill.title = 'Cannot connect to backend server at http://localhost:5000/api/health';
+        return false;
+      }
+    }
+
+    // 2. Enforce strict authentication: No valid JWT -> Redirect to login
+    async function enforceAuthentication() {
+      if (!authToken) {
+        redirectToLogin();
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/me`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!res.ok) {
+          throw new Error('Session expired');
+        }
+
+        const data = await res.json();
+        currentUser = data.user;
+        renderStaffHeader(currentUser);
+        document.getElementById('doctor-diagnostic-results').style.display =
+          currentUser.role === 'DOCTOR' ? 'block' : 'none';
+
+        if (['LAB_TECHNICIAN', 'RADIOLOGY_TECHNICIAN'].includes(currentUser.role)) {
+          configureDepartmentWorkspace(currentUser.role);
+          switchTab(currentUser.role === 'LAB_TECHNICIAN' ? 'tab-laboratory' : 'tab-radiology');
+          return;
+        }
+
+        // Fetch real database records
+        loadLiveAppointments();
+        loadLivePatients(1);
+        loadReceptionVisits();
+        loadConsultationVisits();
+      } catch (err) {
+        // Clear invalid tokens and redirect
+        localStorage.removeItem('pcc_auth_token');
+        localStorage.removeItem('pcc_auth_user');
+        sessionStorage.removeItem('pcc_auth_token');
+        redirectToLogin();
+      }
+    }
+
+    function redirectToLogin() {
+      window.location.replace('login.html');
+    }
+
+    function renderStaffHeader(user) {
+      if (!user) return;
+      document.getElementById('user-display-name').textContent = user.name || 'Staff Member';
+      document.getElementById('user-display-role').textContent = user.role || 'STAFF';
+      const initials = (user.name || 'AD').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('user-avatar-initials').textContent = initials;
+    }
+
+    // 3. Load Appointments from PostgreSQL via REST API
+    async function loadLiveAppointments() {
+      const tbody = document.getElementById('appts-tbody');
+
+      try {
+        const res = await fetch(`${API_BASE}/appointments`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to load appointments (HTTP ${res.status})`);
+        }
+
+        const data = await res.json();
+        appointmentsList = data.appointments || [];
+
+        renderMetrics(data.stats || {});
+        renderAppointmentsTable();
+        renderDashboardRecent();
+      } catch (err) {
+        console.error('[Appointments Load Error]:', err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #be123c;">Unable to load appointment records: ${escapeHtml(err.message)}</td></tr>`;
+        }
+        // Check health separately so topbar accurately reflects PostgreSQL state
+        checkDatabaseHealth();
+      }
+    }
+
+    // 3. Render Metrics
+    function renderMetrics(stats) {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayCount = appointmentsList.filter(a => a.preferredDate === todayStr).length;
+
+      document.getElementById('stat-total-val').textContent = stats.total ?? appointmentsList.length;
+      document.getElementById('stat-today-val').textContent = todayCount;
+      document.getElementById('stat-pending-val').textContent = stats.pending ?? 0;
+      document.getElementById('stat-confirmed-val').textContent = stats.confirmed ?? 0;
+      document.getElementById('stat-completed-val').textContent = stats.completed ?? 0;
+      document.getElementById('stat-cancelled-val').textContent = stats.cancelled ?? 0;
+    }
+
+    // 4. Render Appointments Table
+    function renderAppointmentsTable() {
+      const tbody = document.getElementById('appts-tbody');
+      const statusFilter = document.getElementById('appt-filter-status').value;
+      const doctorFilter = document.getElementById('appt-filter-doctor').value;
+      const dateFilter = document.getElementById('appt-filter-date').value;
+      const searchVal = document.getElementById('global-search-input').value.toLowerCase().trim();
+
+      let filtered = appointmentsList.filter(item => {
+        if (statusFilter !== 'ALL' && item.status !== statusFilter) return false;
+        if (doctorFilter !== 'ALL' && item.doctorName !== doctorFilter) return false;
+        if (dateFilter && item.preferredDate !== dateFilter) return false;
+        if (searchVal) {
+          const matchName = item.patientName.toLowerCase().includes(searchVal);
+          const matchPhone = item.patientPhone.toLowerCase().includes(searchVal);
+          const matchService = item.serviceType.toLowerCase().includes(searchVal);
+          const matchId = item.id.toLowerCase().includes(searchVal);
+          const matchMrn = item.patientMRN ? item.patientMRN.toLowerCase().includes(searchVal) : false;
+          if (!matchName && !matchPhone && !matchService && !matchId && !matchMrn) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">No matching appointment records found in database.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const statusClass = item.status.toLowerCase();
+        const shortId = item.id.substring(0, 8);
+        const mrnBadgeHtml = item.patientMRN
+          ? `<div style="margin-top: 3px;"><span class="mrn-badge" style="font-size: 0.6875rem; padding: 1px 6px;">${escapeHtml(item.patientMRN)}</span></div>`
+          : `<div style="margin-top: 3px;"><span style="font-size: 0.6875rem; background: #f8fafc; color: #64748b; border: 1px solid #cbd5e1; padding: 1px 5px; border-radius: 4px;">Initial Demo (Unlinked)</span></div>`;
+
+        return `
+          <tr>
+            <td><code style="font-size: 0.75rem;">#${shortId}</code></td>
+            <td>
+              <strong>${escapeHtml(item.patientName)}</strong>
+              ${item.patientEmail ? `<div style="font-size: 0.75rem; color: #64748b;">${escapeHtml(item.patientEmail)}</div>` : ''}
+              ${mrnBadgeHtml}
+            </td>
+            <td>${escapeHtml(item.patientPhone)}</td>
+            <td><span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">${escapeHtml(item.serviceType)}</span></td>
+            <td>${escapeHtml(item.doctorName)}</td>
+            <td>
+              <div><strong>${item.preferredDate}</strong></div>
+              <div style="font-size: 0.75rem; color: #64748b;">${item.preferredTime}</div>
+            </td>
+            <td><span class="status-pill ${statusClass}">${item.status}</span></td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button class="action-btn" onclick="openDetailModal('${item.id}')">View</button>
+              ${!item.patientMRN ? `<button class="action-btn" style="color: var(--teal-700); border-color: var(--teal-600);" onclick="openRegisterAndLinkPatient('${item.id}', '${escapeHtml(item.patientName)}', '${escapeHtml(item.patientPhone)}', '${escapeHtml(item.patientEmail || '')}')" title="Register patient and link appointment">+ Link Patient</button>` : ''}
+              ${item.status === 'PENDING' ? `<button class="action-btn primary" onclick="updateAppointmentStatus('${item.id}', 'CONFIRMED')">Confirm</button>` : ''}
+              ${item.status === 'CONFIRMED' ? `<button class="action-btn primary" onclick="updateAppointmentStatus('${item.id}', 'COMPLETED')">Complete</button>` : ''}
+              <button class="action-btn" onclick="openRescheduleModal('${item.id}')">Reschedule</button>
+              ${item.status !== 'CANCELLED' ? `<button class="action-btn danger" onclick="updateAppointmentStatus('${item.id}', 'CANCELLED')">Cancel</button>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 5. Render Dashboard Recent Table
+    function renderDashboardRecent() {
+      const tbody = document.getElementById('dashboard-recent-tbody');
+      const recent = appointmentsList.slice(0, 5);
+
+      if (recent.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 1.5rem; color: #64748b;">No recent bookings.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = recent.map(item => `
+        <tr>
+          <td>
+            <strong>${escapeHtml(item.patientName)}</strong>
+            <div style="font-size: 0.75rem; color: #64748b;">${escapeHtml(item.patientPhone)}</div>
+            ${item.patientMRN 
+              ? `<span class="mrn-badge" style="font-size: 0.65rem; padding: 1px 4px;">${escapeHtml(item.patientMRN)}</span>` 
+              : `<span style="font-size: 0.65rem; color: #64748b; background: #f8fafc; border: 1px solid #e2e8f0; padding: 1px 4px; border-radius: 3px;">Demo Booking</span>`
+            }
+          </td>
+          <td><span style="font-size: 0.75rem; color: var(--navy-900); font-weight: 500;">${escapeHtml(item.serviceType)}</span></td>
+          <td>${item.preferredDate} (${item.preferredTime})</td>
+          <td><span class="status-pill ${item.status.toLowerCase()}">${item.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // 7. Update Status (PATCH /api/appointments/:id/status)
+    async function updateAppointmentStatus(id, newStatus) {
+      if (!confirm(`Confirm transition to ${newStatus}?`)) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/appointments/${id}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ status: newStatus })
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Status update failed.');
+          return;
+        }
+
+        // Reload data from PostgreSQL
+        loadLiveAppointments();
+      } catch (err) {
+        alert('Server communication error.');
+      }
+    }
+
+    // 8. Reschedule Form Submission (PATCH /api/appointments/:id/reschedule)
+    const rescheduleForm = document.getElementById('reschedule-submit-form');
+    rescheduleForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('modal-reschedule-id').value;
+      const preferredDate = document.getElementById('modal-reschedule-date').value;
+      const slotStart = document.getElementById('modal-reschedule-time').value;
+      const errBox = document.getElementById('reschedule-error');
+
+      errBox.style.display = 'none';
+
+      try {
+        const res = await fetch(`${API_BASE}/appointments/${id}/reschedule`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ preferredDate, slotStart })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errBox.textContent = data.message || 'Failed to reschedule appointment.';
+          errBox.style.display = 'block';
+          return;
+        }
+
+        closeAllModals();
+        loadLiveAppointments();
+      } catch (err) {
+        errBox.textContent = 'Network communication failure with backend API.';
+        errBox.style.display = 'block';
+      }
+    });
+
+    // 9. Modals Controls
+    function openDetailModal(id) {
+      const item = appointmentsList.find(a => a.id === id);
+      if (!item) return;
+
+      const body = document.getElementById('modal-detail-content');
+      body.innerHTML = `
+        <div style="margin-bottom: 0.5rem;"><strong>Database Record ID:</strong> <code>${item.id}</code></div>
+        <div style="margin-bottom: 0.5rem;"><strong>Patient Name:</strong> ${escapeHtml(item.patientName)}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Phone Number:</strong> ${escapeHtml(item.patientPhone)}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Email:</strong> ${escapeHtml(item.patientEmail || 'None')}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Consultation Service:</strong> ${escapeHtml(item.serviceType)}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Assigned Physician:</strong> ${escapeHtml(item.doctorName)}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Scheduled Slot:</strong> ${item.preferredDate} (${item.preferredTime})</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Status:</strong> <span class="status-pill ${item.status.toLowerCase()}">${item.status}</span></div>
+        <div style="margin-bottom: 0.5rem;"><strong>Clinical Notes / Symptoms:</strong><br>
+          <div style="background: var(--gray-100); padding: 0.75rem; border-radius: 6px; margin-top: 4px;">
+            ${escapeHtml(item.notes || 'No symptoms or special notes provided by patient.')}
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 1rem;">Created On: ${item.createdAt || 'N/A'}</div>
+      `;
+      document.getElementById('modal-view-detail').classList.add('open');
+    }
+
+    function openRescheduleModal(id) {
+      const item = appointmentsList.find(a => a.id === id);
+      if (!item) return;
+
+      document.getElementById('modal-reschedule-id').value = id;
+      document.getElementById('modal-reschedule-date').value = item.preferredDate;
+      const currentStart = item.slotStart || legacyAppointmentSlotStart(item.preferredTime);
+      loadRescheduleAvailability(item, currentStart);
+      document.getElementById('reschedule-error').style.display = 'none';
+      document.getElementById('modal-reschedule').classList.add('open');
+    }
+
+    function legacyAppointmentSlotStart(value) {
+      const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)/i.exec(value || '');
+      if (!match) return '';
+      let hour = Number(match[1]) % 12;
+      if (match[3].toUpperCase() === 'PM') hour += 12;
+      return `${String(hour).padStart(2, '0')}:${match[2]}`;
+    }
+
+    async function loadRescheduleAvailability(item, preferredStart = '') {
+      const date = document.getElementById('modal-reschedule-date').value;
+      const select = document.getElementById('modal-reschedule-time');
+      const errBox = document.getElementById('reschedule-error');
+      select.innerHTML = '<option value="">Loading available slots...</option>';
+
+      try {
+        const response = await fetch(
+          `${API_BASE}/doctors/${encodeURIComponent(item.doctorId)}/availability?date=${encodeURIComponent(date)}`
+        );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Unable to load available slots.');
+
+        const slots = data.slots || [];
+        if (date === item.preferredDate && preferredStart &&
+            !slots.some(slot => slot.slotStart === preferredStart)) {
+          slots.unshift({ slotStart: preferredStart, label: item.preferredTime });
+        }
+
+        select.innerHTML = '';
+        if (slots.length === 0) {
+          select.innerHTML = '<option value="">No available slots for this date</option>';
+        } else {
+          select.add(new Option('Select a time slot', ''));
+          slots.forEach(slot => select.add(new Option(slot.label, slot.slotStart)));
+          if (preferredStart && date === item.preferredDate) select.value = preferredStart;
+        }
+        errBox.style.display = 'none';
+      } catch (err) {
+        select.innerHTML = '<option value="">Availability unavailable</option>';
+        errBox.textContent = err.message || 'Unable to load available slots.';
+        errBox.style.display = 'block';
+      }
+    }
+
+    document.getElementById('modal-reschedule-date').addEventListener('change', () => {
+      const id = document.getElementById('modal-reschedule-id').value;
+      const item = appointmentsList.find(appointment => appointment.id === id);
+      if (item) loadRescheduleAvailability(item);
+    });
+
+    function closeAllModals() {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+    }
+
+    // 10. Sidebar Navigation tabs switcher
+    function setupSidebarNavigation() {
+      document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTab = btn.getAttribute('data-tab');
+          if (targetTab) {
+            switchTab(targetTab);
+          }
+          if (window.innerWidth <= 1024) {
+            document.getElementById('admin-sidebar').classList.remove('open');
+          }
+        });
+      });
+
+      // Mobile Menu
+      const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+          document.getElementById('admin-sidebar').classList.toggle('open');
+        });
+      }
+
+      // Logout handler
+      document.getElementById('btn-portal-logout').addEventListener('click', () => {
+        if (confirm('Log out from administrative portal session?')) {
+          localStorage.removeItem('pcc_auth_token');
+          localStorage.removeItem('pcc_auth_user');
+          sessionStorage.removeItem('pcc_auth_token');
+          redirectToLogin();
+        }
+      });
+
+      // Refresh buttons
+      document.getElementById('btn-dashboard-refresh').addEventListener('click', () => {
+        checkDatabaseHealth();
+        loadLiveAppointments();
+        loadLivePatients(patientCurrentPage);
+      });
+      document.getElementById('btn-appts-refresh').addEventListener('click', () => {
+        checkDatabaseHealth();
+        loadLiveAppointments();
+      });
+      document.getElementById('btn-reception-refresh').addEventListener('click', loadReceptionVisits);
+      document.getElementById('btn-consultations-refresh').addEventListener('click', loadConsultationVisits);
+    }
+
+    function setupConsultationEventListeners() {
+      document.getElementById('consultation-visits-tbody').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-consultation-visit-id]');
+        if (button) openConsultationVisit(button.getAttribute('data-consultation-visit-id'));
+      });
+      document.getElementById('consultation-form').addEventListener('submit', saveConsultation);
+      document.getElementById('diagnostic-order-form').addEventListener('submit', saveDiagnosticOrder);
+      document.getElementById('btn-doctor-results-refresh').addEventListener('click', loadDoctorDiagnosticResults);
+    }
+
+    async function loadConsultationVisits() {
+      const tbody = document.getElementById('consultation-visits-tbody');
+      try {
+        const res = await fetch(`${API_BASE}/consultations/visits`, {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to load checked-in visits.');
+        const visits = data.visits || [];
+        tbody.innerHTML = '';
+        if (visits.length === 0) {
+          const row = document.createElement('tr');
+          const cell = document.createElement('td');
+          cell.colSpan = 6;
+          cell.textContent = 'No checked-in visits are waiting for consultation.';
+          cell.style.cssText = 'text-align:center;padding:2rem;color:#64748b;';
+          row.appendChild(cell);
+          tbody.appendChild(row);
+          return;
+        }
+        for (const visit of visits) {
+          const row = document.createElement('tr');
+          const values = [
+            visit.visitNumber,
+            visit.patient.fullName,
+            visit.patient.mrn,
+            new Date(visit.checkedInAt).toLocaleString(),
+          ];
+          for (const value of values) {
+            const cell = document.createElement('td');
+            cell.textContent = value;
+            row.appendChild(cell);
+          }
+          const statusCell = document.createElement('td');
+          const status = document.createElement('span');
+          status.className = 'status-pill ' + (visit.status === 'IN_PROGRESS' ? 'confirmed' : 'pending');
+          status.textContent = visit.status.replace(/_/g, ' ');
+          statusCell.appendChild(status);
+          row.appendChild(statusCell);
+          const actionCell = document.createElement('td');
+          actionCell.style.textAlign = 'right';
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'action-btn';
+          button.dataset.consultationVisitId = visit.id;
+          button.textContent = 'Open visit';
+          actionCell.appendChild(button);
+          row.appendChild(actionCell);
+          tbody.appendChild(row);
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #be123c;">${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    async function openConsultationVisit(visitId) {
+      const workspace = document.getElementById('consultation-workspace');
+      const history = document.getElementById('consultation-patient-history');
+      const form = document.getElementById('consultation-form');
+      const existingRecord = document.getElementById('consultation-existing-record');
+      const message = document.getElementById('consultation-form-message');
+      selectedConsultationVisitId = visitId;
+      workspace.style.display = 'grid';
+      history.textContent = 'Loading patient history...';
+      message.textContent = '';
+      existingRecord.style.display = 'none';
+      existingRecord.innerHTML = '';
+      form.style.display = 'block';
+      form.reset();
+      form.querySelectorAll('textarea').forEach((field) => { field.disabled = false; });
+      document.getElementById('btn-save-consultation').disabled = false;
+      document.getElementById('consultation-visit-summary').textContent = 'Loading checked-in visit...';
+      document.getElementById('diagnostic-order-form').reset();
+      document.getElementById('btn-save-diagnostic-order').disabled = true;
+      document.getElementById('diagnostic-order-message').textContent = '';
+      updateDiagnosticOrderAccess();
+      document.getElementById('diagnostic-order-list-message').textContent = 'Loading diagnostic orders...';
+      document.getElementById('diagnostic-orders-tbody').innerHTML =
+        '<tr><td colspan="4" style="text-align: center; padding: 1rem; color: #64748b;">Loading diagnostic orders...</td></tr>';
+      document.getElementById('doctor-diagnostic-results-message').textContent = 'Loading results...';
+      document.getElementById('doctor-diagnostic-results-list').textContent = '';
+      document.getElementById('btn-doctor-results-refresh').disabled = true;
+
+      try {
+        const visitResponse = await fetch(`${API_BASE}/consultations/visits/${encodeURIComponent(visitId)}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        const visitData = await visitResponse.json();
+        if (!visitResponse.ok) throw new Error(visitData.message || 'Unable to open checked-in visit.');
+        const visit = visitData.visit;
+        const historyRes = await fetch(`${API_BASE}/consultations/patients/${encodeURIComponent(visit.patient.id)}/history`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        const historyData = await historyRes.json();
+        if (!historyRes.ok) throw new Error(historyData.message || 'Unable to load patient history.');
+        renderConsultationVisit(visit);
+        renderConsultationHistory(historyData.patient);
+        document.getElementById('btn-save-diagnostic-order').disabled =
+          !isValidVisitId(visit.id) || !currentUser || currentUser.role !== 'DOCTOR';
+        await loadDiagnosticOrders(visit.id);
+        await loadDoctorDiagnosticResults();
+      } catch (err) {
+        history.textContent = err.message;
+        document.getElementById('consultation-visit-summary').textContent = '';
+        document.getElementById('diagnostic-order-list-message').textContent =
+          'Unable to load orders because the visit could not be opened.';
+        document.getElementById('diagnostic-order-form').reset();
+        document.getElementById('btn-save-diagnostic-order').disabled = true;
+      }
+    }
+
+    function isValidVisitId(visitId) {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(visitId || '');
+    }
+
+    function updateDiagnosticOrderAccess() {
+      const form = document.getElementById('diagnostic-order-form');
+      const button = document.getElementById('btn-save-diagnostic-order');
+      const message = document.getElementById('diagnostic-order-message');
+      const canCreateOrders = Boolean(currentUser && currentUser.role === 'DOCTOR');
+      form.style.display = canCreateOrders ? 'block' : 'none';
+      button.disabled = !canCreateOrders || !isValidVisitId(selectedConsultationVisitId);
+      if (!canCreateOrders) {
+        message.textContent = currentUser
+          ? 'Only authenticated doctor accounts may place diagnostic orders.'
+          : 'Sign in with a doctor account to place diagnostic orders.';
+      } else {
+        message.textContent = '';
+      }
+    }
+
+    async function loadDiagnosticOrders(visitId) {
+      const tbody = document.getElementById('diagnostic-orders-tbody');
+      const listMessage = document.getElementById('diagnostic-order-list-message');
+      if (!isValidVisitId(visitId) || visitId !== selectedConsultationVisitId) {
+        document.getElementById('btn-save-diagnostic-order').disabled = true;
+        listMessage.textContent = 'Select a valid visit to view or place diagnostic orders.';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 1rem; color: #64748b;">No visit selected.</td></tr>';
+        return;
+      }
+
+      listMessage.textContent = 'Loading diagnostic orders...';
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders/visit/${encodeURIComponent(visitId)}`, {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to load diagnostic orders.');
+        if (visitId !== selectedConsultationVisitId) return;
+
+        if (!Array.isArray(data.orders)) {
+          throw new Error('The diagnostic order response was invalid.');
+        }
+        const orders = data.orders;
+        if (orders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 1rem; color: #64748b;">No diagnostic orders for this visit.</td></tr>';
+          listMessage.textContent = '';
+          return;
+        }
+
+        if (orders.some((order) => !['LAB', 'RADIOLOGY'].includes(order.type) || typeof order.testName !== 'string')) {
+          throw new Error('The diagnostic order response contained invalid data.');
+        }
+        tbody.innerHTML = orders.map((order) => `
+          <tr>
+            <td>${escapeHtml(order.type === 'LAB' ? 'Lab' : 'Radiology')}</td>
+            <td>${escapeHtml(order.testName)}</td>
+            <td><span class="status-pill pending">${escapeHtml(order.status)}</span></td>
+            <td>${escapeHtml(new Date(order.createdAt).toLocaleString())}</td>
+          </tr>
+        `).join('');
+        listMessage.textContent = '';
+      } catch (err) {
+        if (visitId !== selectedConsultationVisitId) return;
+        listMessage.textContent = err.message;
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 1rem; color: #be123c;">Unable to display diagnostic orders.</td></tr>';
+      }
+    }
+
+    async function saveDiagnosticOrder(event) {
+      event.preventDefault();
+      const form = document.getElementById('diagnostic-order-form');
+      const button = document.getElementById('btn-save-diagnostic-order');
+      const message = document.getElementById('diagnostic-order-message');
+      const visitId = selectedConsultationVisitId;
+      if (!currentUser || currentUser.role !== 'DOCTOR') {
+        button.disabled = true;
+        message.textContent = 'Only authenticated doctor accounts may place diagnostic orders.';
+        return;
+      }
+      if (!isValidVisitId(visitId)) {
+        button.disabled = true;
+        message.textContent = 'Open a valid visit before placing a diagnostic order.';
+        return;
+      }
+      if (!form.reportValidity()) return;
+
+      const testName = document.getElementById('diagnostic-order-test-name').value.trim();
+      if (!testName) {
+        message.textContent = 'Enter a test name before placing the order.';
+        document.getElementById('diagnostic-order-test-name').focus();
+        return;
+      }
+
+      button.disabled = true;
+      message.textContent = 'Placing diagnostic order...';
+      const order = {
+        visitId,
+        type: document.getElementById('diagnostic-order-type').value,
+        testName,
+        clinicalIndication: document.getElementById('diagnostic-order-indication').value.trim(),
+        notes: document.getElementById('diagnostic-order-notes').value.trim(),
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + authToken,
+          },
+          body: JSON.stringify(order),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to place diagnostic order.');
+        form.reset();
+        message.textContent = 'Diagnostic order placed successfully.';
+        await loadDiagnosticOrders(visitId);
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = !isValidVisitId(selectedConsultationVisitId) || currentUser.role !== 'DOCTOR';
+      }
+    }
+
+    function renderConsultationVisit(visit) {
+      const patient = visit.patient;
+      const age = patient.isAgeEstimated
+        ? `${patient.estimatedAge ?? 'Unknown'} years (estimated)`
+        : patient.dateOfBirth
+          ? `${new Date(patient.dateOfBirth).toLocaleDateString()}`
+          : 'Not recorded';
+      document.getElementById('consultation-visit-summary').innerHTML = `
+        <h2 style="margin: 0 0 0.5rem; color: var(--navy-900); font-size: 1.2rem;">${escapeHtml(patient.fullName)}</h2>
+        <div style="color: var(--gray-600);">${escapeHtml(patient.mrn)} · Visit ${escapeHtml(visit.visitNumber)} · ${escapeHtml(visit.status.replace(/_/g, ' '))}</div>
+        <div style="margin-top: 0.35rem; color: var(--gray-600);">Age / DOB: ${escapeHtml(age)} · Gender: ${escapeHtml(patient.gender)} · Blood group: ${escapeHtml(patient.bloodGroup || 'Not recorded')}</div>
+      `;
+      const form = document.getElementById('consultation-form');
+      const existing = document.getElementById('consultation-existing-record');
+      const saveButton = document.getElementById('btn-save-consultation');
+      if (visit.consultation) {
+        form.style.display = 'none';
+        existing.style.display = 'block';
+        saveButton.disabled = true;
+        const fields = [
+          ['Chief complaint', 'chiefComplaint'],
+          ['Present illness', 'presentIllness'],
+          ['Relevant medical history', 'medicalHistory'],
+          ['Allergies', 'allergies'],
+          ['Examination findings', 'examinationFindings'],
+          ['Provisional diagnosis', 'provisionalDiagnosis'],
+          ['Final diagnosis', 'finalDiagnosis'],
+          ['Consultation notes', 'consultationNotes'],
+        ];
+        existing.innerHTML = `
+          <h3 style="margin: 0 0 0.5rem; color: var(--teal-700);">Consultation already recorded</h3>
+          <p>Authored by ${escapeHtml(visit.consultation.author.name)} · ${escapeHtml(new Date(visit.consultation.createdAt).toLocaleString())}</p>
+          ${fields.map(([label, key]) => `<div style="margin: 0.75rem 0;"><strong>${label}</strong><div style="white-space: pre-wrap;">${escapeHtml(visit.consultation[key] || 'Not recorded')}</div></div>`).join('')}
+        `;
+      } else {
+        form.style.display = 'block';
+        existing.style.display = 'none';
+        saveButton.disabled = false;
+      }
+    }
+
+    function renderConsultationHistory(patient) {
+      const history = document.getElementById('consultation-patient-history');
+      const entries = patient.consultations || [];
+      const generalHistory = patient.notes
+        ? `<div style="margin-bottom: 1rem;"><strong>Patient record notes</strong><p style="white-space: pre-wrap;">${escapeHtml(patient.notes)}</p></div>`
+        : '';
+      const consultationHistory = entries.length
+        ? entries.map((entry) => `
+          <article style="border-top: 1px solid var(--gray-200); padding: 0.85rem 0;">
+            <strong>${escapeHtml(entry.visit.visitNumber)}</strong>
+            <div style="color: var(--gray-600); font-size: 0.75rem;">${escapeHtml(new Date(entry.createdAt).toLocaleString())} · ${escapeHtml(entry.author.name)}</div>
+            <p><strong>Complaint:</strong> ${escapeHtml(entry.chiefComplaint)}</p>
+            ${entry.presentIllness ? `<p style="white-space: pre-wrap;"><strong>Present illness:</strong> ${escapeHtml(entry.presentIllness)}</p>` : ''}
+            ${entry.medicalHistory ? `<p><strong>History:</strong> ${escapeHtml(entry.medicalHistory)}</p>` : ''}
+            ${entry.allergies ? `<p><strong>Allergies:</strong> ${escapeHtml(entry.allergies)}</p>` : ''}
+            ${entry.examinationFindings ? `<p style="white-space: pre-wrap;"><strong>Examination:</strong> ${escapeHtml(entry.examinationFindings)}</p>` : ''}
+            ${entry.provisionalDiagnosis ? `<p><strong>Provisional diagnosis:</strong> ${escapeHtml(entry.provisionalDiagnosis)}</p>` : ''}
+            ${entry.finalDiagnosis ? `<p><strong>Final diagnosis:</strong> ${escapeHtml(entry.finalDiagnosis)}</p>` : ''}
+            ${entry.consultationNotes ? `<p style="white-space: pre-wrap;"><strong>Notes:</strong> ${escapeHtml(entry.consultationNotes)}</p>` : ''}
+          </article>
+        `).join('')
+        : '<p>No previous consultations recorded.</p>';
+      history.innerHTML = `${generalHistory}<h3 style="margin: 0.75rem 0;">Previous consultations</h3>${consultationHistory}`;
+    }
+
+    async function saveConsultation(event) {
+      event.preventDefault();
+      if (!selectedConsultationVisitId) return;
+      const button = document.getElementById('btn-save-consultation');
+      const message = document.getElementById('consultation-form-message');
+      const fields = {
+        chiefComplaint: 'consultation-chief-complaint',
+        presentIllness: 'consultation-present-illness',
+        medicalHistory: 'consultation-medical-history',
+        allergies: 'consultation-allergies',
+        examinationFindings: 'consultation-examination',
+        provisionalDiagnosis: 'consultation-provisional-diagnosis',
+        finalDiagnosis: 'consultation-final-diagnosis',
+        consultationNotes: 'consultation-notes',
+      };
+      const consultation = Object.fromEntries(
+        Object.entries(fields).map(([key, id]) => [key, document.getElementById(id).value])
+      );
+      button.disabled = true;
+      message.textContent = 'Saving consultation...';
+      try {
+        const res = await fetch(`${API_BASE}/consultations/visits/${encodeURIComponent(selectedConsultationVisitId)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(consultation),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to save consultation.');
+        message.textContent = 'Consultation saved successfully.';
+        await loadConsultationVisits();
+        await openConsultationVisit(selectedConsultationVisitId);
+      } catch (err) {
+        message.textContent = err.message;
+        button.disabled = false;
+      }
+    }
+
+    function setupReceptionEventListeners() {
+      const searchInput = document.getElementById('reception-patient-search');
+      const results = document.getElementById('reception-search-results');
+      const appointmentSelect = document.getElementById('reception-appointment-select');
+      const checkinButton = document.getElementById('btn-reception-checkin');
+
+      searchInput.addEventListener('input', () => {
+        clearTimeout(receptionSearchDebounce);
+        const requestId = ++receptionSearchRequestId;
+        const query = searchInput.value.trim();
+        if (selectedReceptionPatient) clearReceptionPatientSelection();
+        if (query.length < 2) {
+          results.innerHTML = '';
+          return;
+        }
+        receptionSearchDebounce = setTimeout(() => searchReceptionPatients(query, requestId), 250);
+      });
+
+      results.addEventListener('click', (event) => {
+        const option = event.target.closest('[data-reception-patient-id]');
+        if (!option) return;
+        const patient = JSON.parse(option.getAttribute('data-patient'));
+        selectReceptionPatient(patient);
+      });
+
+      checkinButton.addEventListener('click', submitReceptionCheckin);
+      appointmentSelect.addEventListener('change', () => {
+        checkinButton.disabled = !selectedReceptionPatient;
+      });
+    }
+
+    async function searchReceptionPatients(query, requestId) {
+      const results = document.getElementById('reception-search-results');
+      results.textContent = 'Searching registered patients...';
+      try {
+        const res = await fetch(`${API_BASE}/reception/patients?search=${encodeURIComponent(query)}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        const data = await res.json();
+        if (requestId !== receptionSearchRequestId) return;
+        if (!res.ok) throw new Error(data.message || 'Unable to search registered patients.');
+        const patients = data.patients || [];
+        if (patients.length === 0) {
+          results.textContent = 'No active registered patients matched that search.';
+          return;
+        }
+        results.innerHTML = patients.map((patient) => `
+          <button type="button" class="action-btn" role="option" data-reception-patient-id="${escapeHtml(patient.id)}"
+            data-patient="${escapeHtml(JSON.stringify(patient))}" style="display: block; width: 100%; text-align: left; margin-top: 0.35rem;">
+            <strong>${escapeHtml(patient.fullName)}</strong> <span style="color: var(--gray-600);">· ${escapeHtml(patient.mrn)} · ${escapeHtml(patient.phone)}</span>
+          </button>
+        `).join('');
+      } catch (err) {
+        if (requestId === receptionSearchRequestId) results.textContent = err.message;
+      }
+    }
+
+    function clearReceptionPatientSelection() {
+      selectedReceptionPatient = null;
+      document.getElementById('reception-selected-patient').textContent = '';
+      const appointmentSelect = document.getElementById('reception-appointment-select');
+      appointmentSelect.innerHTML = '<option value="">Walk-in / no appointment</option>';
+      appointmentSelect.disabled = true;
+      document.getElementById('btn-reception-checkin').disabled = true;
+    }
+
+    async function selectReceptionPatient(patient) {
+      selectedReceptionPatient = patient;
+      const results = document.getElementById('reception-search-results');
+      const selected = document.getElementById('reception-selected-patient');
+      const appointmentSelect = document.getElementById('reception-appointment-select');
+      const message = document.getElementById('reception-checkin-message');
+      results.innerHTML = '';
+      selected.innerHTML = `<strong>Selected:</strong> ${escapeHtml(patient.fullName)} <span style="color: var(--gray-600);">(${escapeHtml(patient.mrn)} · ${escapeHtml(patient.phone)})</span>`;
+      message.textContent = '';
+      appointmentSelect.innerHTML = '<option value="">Walk-in / no appointment</option>';
+      appointmentSelect.disabled = false;
+      document.getElementById('btn-reception-checkin').disabled = false;
+
+      try {
+        const res = await fetch(`${API_BASE}/reception/patients/${encodeURIComponent(patient.id)}/appointments`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to load patient appointments.');
+        for (const appointment of data.appointments || []) {
+          const option = document.createElement('option');
+          option.value = appointment.id;
+          option.textContent = `${appointment.preferredDate} ${appointment.preferredTime} — ${appointment.serviceType} — ${appointment.doctor.name} (${appointment.status})`;
+          appointmentSelect.appendChild(option);
+        }
+      } catch (err) {
+        message.textContent = err.message;
+        appointmentSelect.disabled = true;
+        document.getElementById('btn-reception-checkin').disabled = true;
+      }
+    }
+
+    async function submitReceptionCheckin() {
+      if (!selectedReceptionPatient) return;
+      const button = document.getElementById('btn-reception-checkin');
+      const message = document.getElementById('reception-checkin-message');
+      button.disabled = true;
+      message.textContent = 'Recording check-in...';
+      try {
+        const appointmentId = document.getElementById('reception-appointment-select').value || null;
+        const res = await fetch(`${API_BASE}/reception/visits`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ patientId: selectedReceptionPatient.id, appointmentId }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to check in patient.');
+        message.textContent = `Checked in successfully. Visit number: ${data.visit.visitNumber}.`;
+        document.getElementById('reception-patient-search').value = '';
+        document.getElementById('reception-search-results').innerHTML = '';
+        clearReceptionPatientSelection();
+        await loadReceptionVisits();
+      } catch (err) {
+        message.textContent = err.message;
+        button.disabled = !selectedReceptionPatient;
+      }
+    }
+
+    async function loadReceptionVisits() {
+      const tbody = document.getElementById('reception-visits-tbody');
+      try {
+        const res = await fetch(`${API_BASE}/reception/visits`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Unable to load reception visits.');
+        const visits = data.visits || [];
+        if (visits.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">No reception visits have been recorded.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = visits.map((visit) => `
+          <tr>
+            <td><strong>${escapeHtml(visit.visitNumber)}</strong></td>
+            <td>${escapeHtml(visit.patient.fullName)}</td>
+            <td>${escapeHtml(visit.patient.mrn)}</td>
+            <td>${escapeHtml(new Date(visit.checkedInAt).toLocaleString())}</td>
+            <td>${visit.appointmentId ? 'Appointment' : 'Walk-in'}</td>
+            <td><span class="status-pill ${visit.status === 'CHECKED_IN' ? 'confirmed' : 'pending'}">${escapeHtml(visit.status.replace(/_/g, ' '))}</span></td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #be123c;">${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function configureDepartmentWorkspace(role) {
+      const departmentTab = role === 'LAB_TECHNICIAN' ? 'tab-laboratory' : 'tab-radiology';
+      document.querySelectorAll('.nav-item-btn').forEach((button) => {
+        const visible = button.dataset.tab === departmentTab;
+        button.style.display = visible ? 'flex' : 'none';
+        button.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      });
+      document.querySelectorAll('.sidebar-nav > div').forEach((section) => {
+        section.style.display = [...section.querySelectorAll('.nav-item-btn')]
+          .some((button) => button.style.display !== 'none') ? '' : 'none';
+      });
+      document.querySelectorAll('.admin-tab-pane').forEach((pane) => {
+        pane.style.display = pane.id === departmentTab ? 'block' : 'none';
+      });
+    }
+
+    function setupDiagnosticDepartmentListeners() {
+      document.getElementById('btn-lab-queue-refresh').addEventListener('click', () => loadDepartmentQueue('LAB'));
+      document.getElementById('btn-radiology-queue-refresh').addEventListener('click', () => loadDepartmentQueue('RADIOLOGY'));
+      document.getElementById('lab-queue-tbody').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-order-id]');
+        if (button) openDepartmentOrder('LAB', button.dataset.orderId);
+      });
+      document.getElementById('radiology-queue-tbody').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-order-id]');
+        if (button) openDepartmentOrder('RADIOLOGY', button.dataset.orderId);
+      });
+      document.getElementById('lab-result-form').addEventListener('submit', (event) => submitDepartmentResult(event, 'LAB'));
+      document.getElementById('radiology-result-form').addEventListener('submit', (event) => submitDepartmentResult(event, 'RADIOLOGY'));
+    }
+
+    async function loadDepartmentQueue(type) {
+      const section = type === 'LAB' ? 'lab' : 'radiology';
+      const tbody = document.getElementById(`${section}-queue-tbody`);
+      const message = document.getElementById(`${section}-queue-message`);
+      message.textContent = 'Loading orders...';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">Loading orders...</td></tr>';
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders/queue`, {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `Unable to load ${section} orders (HTTP ${res.status}).`);
+        if (!Array.isArray(data.orders) || data.orders.some((order) => order.type !== type)) {
+          throw new Error('The department queue response was invalid.');
+        }
+        if (data.orders.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">No active orders in this department.</td></tr>';
+          message.textContent = '';
+          return;
+        }
+        tbody.innerHTML = data.orders.map((order) => `
+          <tr>
+            <td>${escapeHtml(order.visit?.visitNumber || 'Visit')}</td>
+            <td>${escapeHtml(order.testName)}</td>
+            <td>${escapeHtml(order.clinicalIndication || 'Not provided')}</td>
+            <td><span class="status-pill ${order.status === 'IN_PROGRESS' ? 'confirmed' : 'pending'}">${escapeHtml(order.status)}</span></td>
+            <td>${escapeHtml(new Date(order.createdAt).toLocaleString())}</td>
+            <td><button type="button" class="action-btn" data-order-id="${escapeHtml(order.id)}">Open order</button></td>
+          </tr>
+        `).join('');
+        message.textContent = `${data.orders.length} active order${data.orders.length === 1 ? '' : 's'} loaded.`;
+      } catch (err) {
+        message.textContent = err.message;
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #be123c;">Unable to load department orders.</td></tr>';
+      }
+    }
+
+    async function openDepartmentOrder(type, orderId) {
+      const section = type === 'LAB' ? 'lab' : 'radiology';
+      const detail = document.getElementById(`${section}-order-detail`);
+      const message = document.getElementById(`${section}-order-action-message`);
+      detail.style.display = 'block';
+      message.textContent = 'Loading order details...';
+      document.getElementById(`${section}-order-actions`).replaceChildren();
+      document.getElementById(`${section}-result-form`).style.display = 'none';
+      document.getElementById(`${section}-saved-result`).style.display = 'none';
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders/${encodeURIComponent(orderId)}`, {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `Unable to load order details (HTTP ${res.status}).`);
+        if (!data.order || data.order.type !== type) throw new Error('The order detail response did not match this department.');
+        selectedDepartmentOrders[type] = data.order.id;
+        renderDepartmentOrder(type, data.order);
+        message.textContent = '';
+      } catch (err) {
+        selectedDepartmentOrders[type] = null;
+        message.textContent = err.message;
+      }
+    }
+
+    function renderDepartmentOrder(type, order, result = order.result) {
+      const section = type === 'LAB' ? 'lab' : 'radiology';
+      const content = document.getElementById(`${section}-order-detail-content`);
+      const actions = document.getElementById(`${section}-order-actions`);
+      const resultForm = document.getElementById(`${section}-result-form`);
+      const savedResult = document.getElementById(`${section}-saved-result`);
+      content.innerHTML = `
+        <dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin:0;">
+          <div><dt><strong>Visit</strong></dt><dd>${escapeHtml(order.visit?.visitNumber || 'Visit')}</dd></div>
+          <div><dt><strong>Test</strong></dt><dd>${escapeHtml(order.testName)}</dd></div>
+          <div><dt><strong>Type</strong></dt><dd>${type === 'LAB' ? 'Laboratory' : 'Radiology'}</dd></div>
+          <div><dt><strong>Status</strong></dt><dd><span class="status-pill ${order.status === 'IN_PROGRESS' ? 'confirmed' : 'pending'}">${escapeHtml(order.status)}</span></dd></div>
+          <div style="grid-column:1/-1;"><dt><strong>Clinical indication</strong></dt><dd style="white-space:pre-wrap;">${escapeHtml(order.clinicalIndication || 'Not provided')}</dd></div>
+          <div style="grid-column:1/-1;"><dt><strong>Order notes</strong></dt><dd style="white-space:pre-wrap;">${escapeHtml(order.notes || 'Not provided')}</dd></div>
+        </dl>
+      `;
+      actions.replaceChildren();
+      if (order.status === 'ORDERED') {
+        actions.appendChild(makeDepartmentActionButton('Start processing', 'IN_PROGRESS', type, order.id));
+        actions.appendChild(makeDepartmentActionButton('Cancel order', 'CANCELLED', type, order.id));
+      } else if (order.status === 'IN_PROGRESS') {
+        actions.appendChild(makeDepartmentActionButton('Cancel order', 'CANCELLED', type, order.id));
+        resultForm.style.display = 'block';
+      } else {
+        resultForm.style.display = 'none';
+      }
+
+      if (result) {
+        savedResult.style.display = 'block';
+        savedResult.innerHTML = `
+          <div class="status-pill confirmed">Result saved · ${escapeHtml(order.status)}</div>
+          <h3>Findings</h3><p style="white-space:pre-wrap;">${escapeHtml(result.findings)}</p>
+          ${result.interpretation ? `<h3>Interpretation</h3><p style="white-space:pre-wrap;">${escapeHtml(result.interpretation)}</p>` : ''}
+          <p>Submitted ${escapeHtml(new Date(result.resultedAt).toLocaleString())}</p>
+        `;
+      } else {
+        savedResult.style.display = 'none';
+        savedResult.replaceChildren();
+      }
+      document.getElementById(`${section}-order-action-message`).textContent = '';
+    }
+
+    function makeDepartmentActionButton(label, status, type, orderId) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = status === 'IN_PROGRESS' ? 'action-btn primary' : 'action-btn';
+      button.textContent = label;
+      button.addEventListener('click', () => updateDepartmentOrderStatus(type, orderId, status));
+      return button;
+    }
+
+    async function updateDepartmentOrderStatus(type, orderId, status) {
+      const section = type === 'LAB' ? 'lab' : 'radiology';
+      const message = document.getElementById(`${section}-order-action-message`);
+      const actions = document.getElementById(`${section}-order-actions`);
+      actions.querySelectorAll('button').forEach((button) => { button.disabled = true; });
+      message.textContent = 'Updating order status...';
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders/${encodeURIComponent(orderId)}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken },
+          body: JSON.stringify({ status }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `Unable to update status (HTTP ${res.status}).`);
+        if (!data.order || data.order.status !== status) throw new Error('The server did not confirm the requested status.');
+        await openDepartmentOrder(type, orderId);
+        await loadDepartmentQueue(type);
+        message.textContent = `Order status updated to ${data.order.status}.`;
+      } catch (err) {
+        message.textContent = err.message;
+        actions.querySelectorAll('button').forEach((button) => { button.disabled = false; });
+      }
+    }
+
+    async function submitDepartmentResult(event, type) {
+      event.preventDefault();
+      const section = type === 'LAB' ? 'lab' : 'radiology';
+      const form = document.getElementById(`${section}-result-form`);
+      const button = document.getElementById(`btn-submit-${section}-result`);
+      const message = document.getElementById(`${section}-order-action-message`);
+      const orderId = selectedDepartmentOrders[type];
+      if (!orderId) {
+        message.textContent = 'Open a department order before submitting findings.';
+        return;
+      }
+      if (!form.reportValidity()) return;
+      const findings = document.getElementById(`${section}-result-findings`).value.trim();
+      if (!findings) {
+        message.textContent = 'Enter findings before submitting the result.';
+        return;
+      }
+
+      button.disabled = true;
+      message.textContent = 'Submitting findings...';
+      try {
+        const res = await fetch(`${API_BASE}/diagnostic-orders/${encodeURIComponent(orderId)}/results`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken },
+          body: JSON.stringify({
+            findings,
+            interpretation: document.getElementById(`${section}-result-interpretation`).value.trim(),
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `Unable to submit findings (HTTP ${res.status}).`);
+        if (!data.success || data.order?.status !== 'COMPLETED' || !data.result?.id) {
+          throw new Error('The server did not confirm that the result was saved and the order completed.');
+        }
+        form.reset();
+        renderDepartmentOrder(type, { ...data.order, visit: { visitNumber: 'Visit' } }, data.result);
+        message.textContent = 'Findings saved successfully; order marked completed.';
+        await loadDepartmentQueue(type);
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function loadDoctorDiagnosticResults() {
+      const message = document.getElementById('doctor-diagnostic-results-message');
+      const list = document.getElementById('doctor-diagnostic-results-list');
+      const button = document.getElementById('btn-doctor-results-refresh');
+      if (!currentUser || currentUser.role !== 'DOCTOR' || !isValidVisitId(selectedConsultationVisitId)) {
+        message.textContent = 'Open a visit to view diagnostic results.';
+        list.replaceChildren();
+        button.disabled = true;
+        return;
+      }
+      button.disabled = true;
+      message.textContent = 'Loading results...';
+      list.textContent = '';
+      try {
+        const visitId = selectedConsultationVisitId;
+        const res = await fetch(`${API_BASE}/diagnostic-orders/doctor/visits/${encodeURIComponent(visitId)}/results`, {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || `Unable to load diagnostic results (HTTP ${res.status}).`);
+        if (!Array.isArray(data.results)) throw new Error('The diagnostic results response was invalid.');
+        if (visitId !== selectedConsultationVisitId) return;
+        if (data.results.length === 0) {
+          message.textContent = 'No saved diagnostic results for orders placed by your account on this visit.';
+          return;
+        }
+        list.innerHTML = data.results.map(({ order, result }) => `
+          <article style="border-top:1px solid var(--gray-200);padding:1rem 0;">
+            <div style="display:flex;justify-content:space-between;gap:0.75rem;flex-wrap:wrap;">
+              <h3 style="margin:0;color:var(--navy-900);">${escapeHtml(order.type === 'LAB' ? 'Lab' : 'Radiology')} · ${escapeHtml(order.testName)}</h3>
+              <span class="status-pill confirmed">${escapeHtml(order.status)}</span>
+            </div>
+            <p><strong>Findings</strong></p><p style="white-space:pre-wrap;">${escapeHtml(result.findings)}</p>
+            ${result.interpretation ? `<p><strong>Interpretation</strong></p><p style="white-space:pre-wrap;">${escapeHtml(result.interpretation)}</p>` : ''}
+            <p style="color:var(--gray-600);">Resulted ${escapeHtml(new Date(result.resultedAt).toLocaleString())}${result.resultedBy?.name ? ` · ${escapeHtml(result.resultedBy.name)}` : ''}</p>
+          </article>
+        `).join('');
+        message.textContent = `${data.results.length} saved result${data.results.length === 1 ? '' : 's'} loaded for this visit.`;
+      } catch (err) {
+        message.textContent = err.message;
+        list.textContent = '';
+      } finally {
+        button.disabled = !isValidVisitId(selectedConsultationVisitId) || !currentUser || currentUser.role !== 'DOCTOR';
+      }
+    }
+
+    function switchTab(tabId) {
+      if (
+        (currentUser?.role === 'LAB_TECHNICIAN' && tabId !== 'tab-laboratory') ||
+        (currentUser?.role === 'RADIOLOGY_TECHNICIAN' && tabId !== 'tab-radiology') ||
+        (tabId === 'tab-laboratory' && currentUser?.role !== 'LAB_TECHNICIAN') ||
+        (tabId === 'tab-radiology' && currentUser?.role !== 'RADIOLOGY_TECHNICIAN')
+      ) return;
+      document.querySelectorAll('.admin-tab-pane').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
+
+      const targetPane = document.getElementById(tabId);
+      if (targetPane) {
+        targetPane.style.display = 'block';
+      }
+
+      const activeBtn = document.querySelector(`.nav-item-btn[data-tab="${tabId}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+
+      if (tabId === 'tab-patients') {
+        loadLivePatients(patientCurrentPage);
+      }
+      if (tabId === 'tab-reception') {
+        loadReceptionVisits();
+      }
+      if (tabId === 'tab-consultations') {
+        loadConsultationVisits();
+      }
+      if (tabId === 'tab-laboratory' && currentUser?.role === 'LAB_TECHNICIAN') {
+        loadDepartmentQueue('LAB');
+      }
+      if (tabId === 'tab-radiology' && currentUser?.role === 'RADIOLOGY_TECHNICIAN') {
+        loadDepartmentQueue('RADIOLOGY');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 11. Search and Filter triggers
+    function setupSearchAndFilters() {
+      const searchInput = document.getElementById('global-search-input');
+      searchInput.addEventListener('input', () => {
+        renderAppointmentsTable();
+      });
+
+      ['appt-filter-status', 'appt-filter-doctor', 'appt-filter-date'].forEach(id => {
+        document.getElementById(id).addEventListener('change', renderAppointmentsTable);
+      });
+
+      document.getElementById('btn-reset-filters').addEventListener('click', () => {
+        document.getElementById('appt-filter-status').value = 'ALL';
+        document.getElementById('appt-filter-doctor').value = 'ALL';
+        document.getElementById('appt-filter-date').value = '';
+        document.getElementById('global-search-input').value = '';
+        renderAppointmentsTable();
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       PATIENT REGISTRATION SYSTEM JAVASCRIPT CONTROLLER
+       ════════════════════════════════════════════════════════════════ */
+    let patientCurrentPage = 1;
+    let patientTotalPages = 1;
+    let patientIsAgeEstimated = false;
+    let editPatientIsAgeEstimated = false;
+    let currentLoadedPatient = null;
+    let patientSearchDebounce = null;
+
+    function setupPatientEventListeners() {
+      // 1. Open Registration Modal button
+      const openRegBtn = document.getElementById('btn-open-register-patient');
+      if (openRegBtn) {
+        openRegBtn.addEventListener('click', openPatientRegisterModal);
+      }
+
+      // 2. Refresh Patient Directory
+      const refreshBtn = document.getElementById('btn-patients-refresh');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => loadLivePatients(patientCurrentPage));
+      }
+
+      // 3. Search and Filter listeners
+      const searchInput = document.getElementById('patient-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', () => {
+          clearTimeout(patientSearchDebounce);
+          patientSearchDebounce = setTimeout(() => {
+            patientCurrentPage = 1;
+            loadLivePatients(1);
+          }, 300);
+        });
+      }
+
+      const genderFilter = document.getElementById('patient-filter-gender');
+      const statusFilter = document.getElementById('patient-filter-status');
+      const limitFilter = document.getElementById('patient-filter-limit');
+
+      if (genderFilter) genderFilter.addEventListener('change', () => { patientCurrentPage = 1; loadLivePatients(1); });
+      if (statusFilter) statusFilter.addEventListener('change', () => { patientCurrentPage = 1; loadLivePatients(1); });
+      if (limitFilter) limitFilter.addEventListener('change', () => { patientCurrentPage = 1; loadLivePatients(1); });
+
+      const resetBtn = document.getElementById('btn-patient-reset-filters');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (searchInput) searchInput.value = '';
+          if (genderFilter) genderFilter.value = 'ALL';
+          if (statusFilter) statusFilter.value = 'active';
+          if (limitFilter) limitFilter.value = '10';
+          patientCurrentPage = 1;
+          loadLivePatients(1);
+        });
+      }
+
+      // 4. Registration Form submission
+      const regForm = document.getElementById('patient-register-form');
+      if (regForm) {
+        regForm.addEventListener('submit', handlePatientRegistration);
+      }
+
+      // 5. Edit Form submission
+      const editForm = document.getElementById('patient-edit-form');
+      if (editForm) {
+        editForm.addEventListener('submit', handlePatientEdit);
+      }
+
+      // 6. Profile Edit demographics button
+      const profileEditBtn = document.getElementById('btn-profile-edit-demographics');
+      if (profileEditBtn) {
+        profileEditBtn.addEventListener('click', () => {
+          if (currentLoadedPatient) {
+            closeAllModals();
+            openEditPatient(currentLoadedPatient.id);
+          }
+        });
+      }
+
+      // 7. Max date constraint for exact DOB inputs
+      const todayStr = new Date().toISOString().split('T')[0];
+      const dobInput = document.getElementById('reg-patient-dob');
+      const editDobInput = document.getElementById('edit-patient-dob');
+      if (dobInput) dobInput.max = todayStr;
+      if (editDobInput) editDobInput.max = todayStr;
+    }
+
+    // Toggle Age vs Exact DOB in Registration Form
+    function toggleAgeMode(isEstimated) {
+      patientIsAgeEstimated = isEstimated;
+      const exactBtn = document.getElementById('btn-toggle-exact-dob');
+      const estBtn = document.getElementById('btn-toggle-est-age');
+      const exactSec = document.getElementById('section-exact-dob');
+      const estSec = document.getElementById('section-estimated-age');
+      const dobInput = document.getElementById('reg-patient-dob');
+      const estInput = document.getElementById('reg-patient-est-age');
+
+      if (isEstimated) {
+        exactBtn.classList.remove('active');
+        estBtn.classList.add('active');
+        exactSec.style.display = 'none';
+        estSec.style.display = 'block';
+        if (dobInput) dobInput.required = false;
+        if (estInput) estInput.required = true;
+      } else {
+        estBtn.classList.remove('active');
+        exactBtn.classList.add('active');
+        estSec.style.display = 'none';
+        exactSec.style.display = 'block';
+        if (estInput) estInput.required = false;
+        if (dobInput) dobInput.required = true;
+      }
+    }
+
+    // Toggle Age vs Exact DOB in Edit Form
+    function toggleEditAgeMode(isEstimated) {
+      editPatientIsAgeEstimated = isEstimated;
+      const exactBtn = document.getElementById('btn-edit-toggle-exact');
+      const estBtn = document.getElementById('btn-edit-toggle-est');
+      const exactSec = document.getElementById('section-edit-exact-dob');
+      const estSec = document.getElementById('section-edit-est-age');
+
+      if (isEstimated) {
+        exactBtn.classList.remove('active');
+        estBtn.classList.add('active');
+        exactSec.style.display = 'none';
+        estSec.style.display = 'block';
+      } else {
+        estBtn.classList.remove('active');
+        exactBtn.classList.add('active');
+        estSec.style.display = 'none';
+        exactSec.style.display = 'block';
+      }
+    }
+
+    // Open Register Modal
+    let appointmentToLinkId = null;
+
+
+    function openRegisterAndLinkPatient(appointmentId, patientName, phone, email) {
+
+      appointmentToLinkId = appointmentId;
+
+      openPatientRegisterModal();
+
+      document.getElementById('reg-patient-name').value = patientName || '';
+
+      document.getElementById('reg-patient-phone').value = phone || '';
+
+      document.getElementById('reg-patient-email').value = email || '';
+
+    }
+
+
+    function openPatientRegisterModal() {
+      const form = document.getElementById('patient-register-form');
+      if (form) form.reset();
+
+      const dupBanner = document.getElementById('patient-duplicate-banner');
+      const errBanner = document.getElementById('patient-reg-error');
+      const forceChk = document.getElementById('patient-force-duplicate-chk');
+
+      if (dupBanner) dupBanner.style.display = 'none';
+      if (errBanner) errBanner.style.display = 'none';
+      if (forceChk) forceChk.checked = false;
+
+      toggleAgeMode(false);
+      document.getElementById('modal-register-patient').classList.add('open');
+    }
+
+    // Load Live Patients from PostgreSQL REST API
+    async function loadLivePatients(page = 1) {
+      const tbody = document.getElementById('patients-master-tbody');
+      const searchVal = document.getElementById('patient-search-input')?.value.trim() || '';
+      const genderVal = document.getElementById('patient-filter-gender')?.value || 'ALL';
+      const statusVal = document.getElementById('patient-filter-status')?.value || 'active';
+      const limitVal = document.getElementById('patient-filter-limit')?.value || '10';
+
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">Loading registered patient records...</td></tr>`;
+
+      try {
+        const queryParams = new URLSearchParams({
+          page: String(page),
+          limit: limitVal,
+          status: statusVal,
+          search: searchVal,
+        });
+
+        if (genderVal !== 'ALL') {
+          queryParams.append('gender', genderVal);
+        }
+
+        const res = await fetch(`${API_BASE}/patients?${queryParams.toString()}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to retrieve patient directory from backend.');
+        }
+
+        const data = await res.json();
+        patientCurrentPage = data.page;
+        patientTotalPages = data.totalPages;
+
+        renderPatientDirectoryTable(data.patients || [], data.total || 0, data.page, data.limit, data.totalPages);
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: #be123c;">Error communicating with patient directory API: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    // Render Patient Table & Pagination Controls
+    function renderPatientDirectoryTable(patients, total, page, limit, totalPages) {
+      const tbody = document.getElementById('patients-master-tbody');
+      const paginationBar = document.getElementById('patient-pagination-bar');
+      const paginationInfo = document.getElementById('patient-pagination-info');
+      const paginationControls = document.getElementById('patient-pagination-controls');
+
+      if (patients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: #64748b;">No matching patient records found in registry.</td></tr>`;
+        paginationBar.style.display = 'none';
+        return;
+      }
+
+      const startIndex = (page - 1) * limit + 1;
+      const endIndex = Math.min(total, page * limit);
+
+      tbody.innerHTML = patients.map(p => {
+        const statusClass = p.isActive ? 'confirmed' : 'cancelled';
+        const statusText = p.isActive ? 'Active' : 'Inactive';
+
+        // Age / DOB presentation
+        let ageDobHtml = '';
+        if (p.isAgeEstimated) {
+          ageDobHtml = `
+            <div class="dob-pill">
+              <strong>${p.estimatedAge ?? '--'} Yrs</strong>
+              <span class="badge-est">Estimated</span>
+            </div>
+          `;
+        } else if (p.dateOfBirth) {
+          const dobFormatted = new Date(p.dateOfBirth).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+          ageDobHtml = `
+            <div class="dob-pill">
+              <strong>${p.estimatedAge ?? '--'} Yrs</strong>
+              <span class="badge-exact" title="Exact birthdate: ${dobFormatted}">Exact</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #64748b;">${dobFormatted}</div>
+          `;
+        } else {
+          ageDobHtml = `<span style="color: #94a3b8;">--</span>`;
+        }
+
+        return `
+          <tr>
+            <td>
+              <span class="mrn-badge">
+                <span>${escapeHtml(p.mrn)}</span>
+                <button type="button" class="copy-btn" onclick="copyMRN('${escapeHtml(p.mrn)}', this)" title="Copy MRN">📋</button>
+              </span>
+            </td>
+            <td>
+              <strong>${escapeHtml(p.fullName)}</strong>
+              ${p.email ? `<div style="font-size: 0.72rem; color: #64748b;">${escapeHtml(p.email)}</div>` : ''}
+              ${p.bloodGroup ? `<span style="font-size: 0.6875rem; background: #fee2e2; color: #991b1b; padding: 1px 5px; border-radius: 4px; font-weight: 700;">Blood: ${escapeHtml(p.bloodGroup)}</span>` : ''}
+            </td>
+            <td>${ageDobHtml}</td>
+            <td>
+              <span style="font-size: 0.8125rem; font-weight: 500;">${escapeHtml(p.gender)}</span>
+            </td>
+            <td>
+              <strong>${escapeHtml(p.phone)}</strong>
+            </td>
+            <td>
+              <span style="font-size: 0.8125rem;">${escapeHtml(p.address || 'Rawalpindi')}</span>
+            </td>
+            <td>
+              <span class="status-pill ${statusClass}">${statusText}</span>
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button type="button" class="action-btn primary" onclick="openPatientProfile('${escapeHtml(p.id)}')">View Profile</button>
+              <button type="button" class="action-btn" onclick="openEditPatient('${escapeHtml(p.id)}')">Edit</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Populate Pagination
+      paginationInfo.textContent = `Showing ${startIndex}–${endIndex} of ${total} registered patients`;
+
+      let controlsHtml = `
+        <button type="button" class="page-btn" ${page <= 1 ? 'disabled' : ''} onclick="loadLivePatients(${page - 1})">← Prev</button>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= page - 1 && i <= page + 1)) {
+          controlsHtml += `
+            <button type="button" class="page-btn ${i === page ? 'active' : ''}" onclick="loadLivePatients(${i})">${i}</button>
+          `;
+        } else if (i === page - 2 || i === page + 2) {
+          controlsHtml += `<span style="padding: 0 4px; color: #94a3b8;">…</span>`;
+        }
+      }
+
+      controlsHtml += `
+        <button type="button" class="page-btn" ${page >= totalPages ? 'disabled' : ''} onclick="loadLivePatients(${page + 1})">Next →</button>
+      `;
+
+      paginationControls.innerHTML = controlsHtml;
+      paginationBar.style.display = 'flex';
+    }
+
+    // Handle New Patient Registration Form
+    async function handlePatientRegistration(e) {
+      e.preventDefault();
+      const errBanner = document.getElementById('patient-reg-error');
+      const dupBanner = document.getElementById('patient-duplicate-banner');
+      const dupMsg = document.getElementById('patient-duplicate-msg');
+      const forceChk = document.getElementById('patient-force-duplicate-chk');
+      const submitBtn = document.getElementById('btn-submit-register-patient');
+
+      errBanner.style.display = 'none';
+
+      const fullName = document.getElementById('reg-patient-name').value.trim();
+      const gender = document.getElementById('reg-patient-gender').value;
+      const phone = document.getElementById('reg-patient-phone').value.trim();
+      const email = document.getElementById('reg-patient-email').value.trim();
+      const bloodGroup = document.getElementById('reg-patient-blood').value;
+      const city = document.getElementById('reg-patient-city').value.trim();
+      const address = document.getElementById('reg-patient-address').value.trim();
+      const emergencyContactName = document.getElementById('reg-patient-ec-name').value.trim();
+      const emergencyContactRelation = document.getElementById('reg-patient-ec-rel').value.trim();
+      const emergencyContactPhone = document.getElementById('reg-patient-ec-phone').value.trim();
+      const notes = document.getElementById('reg-patient-notes').value.trim();
+
+      const payload = {
+        fullName,
+        gender,
+        phone,
+        email: email || null,
+        bloodGroup: bloodGroup || null,
+        city: city || 'Rawalpindi',
+        address: address || null,
+        emergencyContactName: emergencyContactName || null,
+        emergencyContactRelation: emergencyContactRelation || null,
+        emergencyContactPhone: emergencyContactPhone || null,
+        notes: notes || null,
+        isAgeEstimated: patientIsAgeEstimated,
+        forceConfirmDuplicate: Boolean(forceChk && forceChk.checked),
+      };
+
+      if (appointmentToLinkId) {
+        payload.linkAppointmentId = appointmentToLinkId;
+      }
+
+      if (patientIsAgeEstimated) {
+        const estAge = parseInt(document.getElementById('reg-patient-est-age').value, 10);
+        if (isNaN(estAge) || estAge < 0 || estAge > 130) {
+          errBanner.textContent = 'Please enter a valid estimated age between 0 and 130 years.';
+          errBanner.style.display = 'block';
+          return;
+        }
+        payload.estimatedAge = estAge;
+      } else {
+        const dobVal = document.getElementById('reg-patient-dob').value;
+        if (!dobVal) {
+          errBanner.textContent = 'Please specify the exact calendar Date of Birth.';
+          errBanner.style.display = 'block';
+          return;
+        }
+        payload.dateOfBirth = dobVal;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Registering Patient...</span>';
+
+      try {
+        const res = await fetch(`${API_BASE}/patients`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+
+        // Duplicate conflict flow
+        if (res.status === 409 && data.error === 'DuplicatePatientDetected') {
+          dupMsg.textContent = `${data.message}`;
+          dupBanner.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Confirm &amp; Proceed With Registration</span>';
+          return;
+        }
+
+        if (!res.ok) {
+          errBanner.textContent = data.message || (data.errors ? data.errors.join(' ') : 'Patient registration failed.');
+          errBanner.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Register &amp; Generate MRN</span>';
+          return;
+        }
+
+        // Registration successful
+        const wasLinkingAppointment = Boolean(appointmentToLinkId);
+        appointmentToLinkId = null;
+        alert('Registration complete!\n\nPatient Name: ' + data.patient.fullName +
+          '\nMedical Record Number (MRN): ' + data.patient.mrn +
+          '\n\nPatient record saved to PostgreSQL.' +
+          (wasLinkingAppointment ? '\nAppointment linked successfully.' : ''));
+        closeAllModals();
+        loadLivePatients(1);
+        if (wasLinkingAppointment) loadLiveAppointments();
+      } catch (err) {
+        errBanner.textContent = 'Server communication error. Please check backend connection.';
+        errBanner.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Register &amp; Generate MRN</span>';
+      }
+    }
+
+    // View Patient Profile Detail Modal
+    async function openPatientProfile(identifier) {
+      try {
+        const res = await fetch(`${API_BASE}/patients/${identifier}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+
+        if (!res.ok) {
+          throw new Error('Unable to retrieve patient profile.');
+        }
+
+        const data = await res.json();
+        const p = data.patient;
+        currentLoadedPatient = p;
+
+        document.getElementById('profile-patient-name').textContent = p.fullName;
+        document.getElementById('profile-mrn').textContent = p.mrn;
+        
+        const avatar = document.getElementById('profile-avatar');
+        avatar.textContent = p.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+        const statusPill = document.getElementById('profile-status-pill');
+        statusPill.className = `status-pill ${p.isActive ? 'confirmed' : 'cancelled'}`;
+        statusPill.textContent = p.isActive ? 'Active' : 'Inactive';
+
+        // DOB & Age
+        const dobVal = document.getElementById('profile-dob-val');
+        if (p.isAgeEstimated) {
+          dobVal.innerHTML = `${p.estimatedAge ?? '--'} Years <span class="badge-est">Estimated</span>`;
+        } else if (p.dateOfBirth) {
+          const dobFormatted = new Date(p.dateOfBirth).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+          dobVal.innerHTML = `${dobFormatted} (${p.estimatedAge ?? '--'} Yrs) <span class="badge-exact">Exact</span>`;
+        } else {
+          dobVal.textContent = '--';
+        }
+
+        document.getElementById('profile-gender-val').textContent = p.gender;
+        document.getElementById('profile-phone-val').textContent = p.phone;
+        document.getElementById('profile-email-val').textContent = p.email || 'None provided';
+        document.getElementById('profile-blood-val').textContent = p.bloodGroup || 'Unspecified';
+        document.getElementById('profile-address-val').textContent = p.address || 'Rawalpindi';
+
+        // Emergency contact
+        const ecVal = document.getElementById('profile-ec-val');
+        if (p.emergencyContactName || p.emergencyContactPhone) {
+          ecVal.innerHTML = `
+            <strong>${escapeHtml(p.emergencyContactName || 'Named Contact')}</strong>
+            ${p.emergencyContactRelation ? `(${escapeHtml(p.emergencyContactRelation)})` : ''}<br>
+            Phone: ${escapeHtml(p.emergencyContactPhone || 'N/A')}
+          `;
+        } else {
+          ecVal.textContent = 'No emergency contact specified on record.';
+        }
+
+        // Clinical notes
+        document.getElementById('profile-notes-val').textContent = p.notes || 'No clinical notes recorded.';
+
+        // Audit Trail box
+        const auditBox = document.getElementById('profile-audit-box');
+        const createdDate = new Date(p.createdAt).toLocaleString('en-GB');
+        const updatedDate = new Date(p.updatedAt).toLocaleString('en-GB');
+        const creatorName = p.createdBy ? `${p.createdBy.name} (${p.createdBy.role})` : 'System Administrator';
+        const updaterName = p.updatedBy ? `${p.updatedBy.name} (${p.updatedBy.role})` : creatorName;
+
+        auditBox.innerHTML = `
+          <strong>Electronic Medical Record Audit Trail:</strong><br>
+          • <strong>Registered on:</strong> ${createdDate} by <em>${escapeHtml(creatorName)}</em><br>
+          • <strong>Last updated:</strong> ${updatedDate} by <em>${escapeHtml(updaterName)}</em>
+        `;
+
+        // Appointment History
+        const apptsTbody = document.getElementById('profile-appointments-tbody');
+        if (p.appointments && p.appointments.length > 0) {
+          apptsTbody.innerHTML = p.appointments.map(a => `
+            <tr>
+              <td><strong>${a.preferredDate}</strong> <span style="font-size: 0.75rem; color: #64748b;">${a.preferredTime}</span></td>
+              <td><span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">${escapeHtml(a.serviceType)}</span></td>
+              <td>${escapeHtml(a.doctor?.name || 'Practicing Physician')}</td>
+              <td><span class="status-pill ${a.status.toLowerCase()}">${a.status}</span></td>
+            </tr>
+          `).join('');
+        } else {
+          apptsTbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #64748b; padding: 1.5rem;">No appointments currently linked to this patient.</td></tr>`;
+        }
+
+        document.getElementById('modal-patient-profile').classList.add('open');
+      } catch (err) {
+        alert(err.message || 'Failed to open patient profile.');
+      }
+    }
+
+    // Open Edit Demographics Modal
+    async function openEditPatient(id) {
+      try {
+        const res = await fetch(`${API_BASE}/patients/${id}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` },
+        });
+
+        if (!res.ok) throw new Error('Patient record could not be loaded.');
+
+        const data = await res.json();
+        const p = data.patient;
+
+        document.getElementById('edit-patient-id').value = p.id;
+        document.getElementById('edit-patient-name').value = p.fullName;
+        document.getElementById('edit-patient-gender').value = p.gender;
+        document.getElementById('edit-patient-phone').value = p.phone;
+        document.getElementById('edit-patient-email').value = p.email || '';
+        document.getElementById('edit-patient-blood').value = p.bloodGroup || '';
+        document.getElementById('edit-patient-active').value = p.isActive ? 'true' : 'false';
+        document.getElementById('edit-patient-address').value = p.address || '';
+        document.getElementById('edit-patient-ec-name').value = p.emergencyContactName || '';
+        document.getElementById('edit-patient-ec-rel').value = p.emergencyContactRelation || '';
+        document.getElementById('edit-patient-ec-phone').value = p.emergencyContactPhone || '';
+        document.getElementById('edit-patient-notes').value = p.notes || '';
+
+        // Age / DOB
+        if (p.isAgeEstimated) {
+          toggleEditAgeMode(true);
+          document.getElementById('edit-patient-est-age').value = p.estimatedAge || '';
+        } else {
+          toggleEditAgeMode(false);
+          if (p.dateOfBirth) {
+            document.getElementById('edit-patient-dob').value = p.dateOfBirth.split('T')[0];
+          }
+        }
+
+        document.getElementById('patient-edit-error').style.display = 'none';
+        document.getElementById('modal-edit-patient').classList.add('open');
+      } catch (err) {
+        alert(err.message || 'Failed to load patient demographics for editing.');
+      }
+    }
+
+    // Handle Patient Edit Submission
+    async function handlePatientEdit(e) {
+      e.preventDefault();
+      const errBanner = document.getElementById('patient-edit-error');
+      const submitBtn = document.getElementById('btn-submit-edit-patient');
+      errBanner.style.display = 'none';
+
+      const id = document.getElementById('edit-patient-id').value;
+      const fullName = document.getElementById('edit-patient-name').value.trim();
+      const gender = document.getElementById('edit-patient-gender').value;
+      const phone = document.getElementById('edit-patient-phone').value.trim();
+      const email = document.getElementById('edit-patient-email').value.trim();
+      const bloodGroup = document.getElementById('edit-patient-blood').value;
+      const isActive = document.getElementById('edit-patient-active').value === 'true';
+      const address = document.getElementById('edit-patient-address').value.trim();
+      const emergencyContactName = document.getElementById('edit-patient-ec-name').value.trim();
+      const emergencyContactRelation = document.getElementById('edit-patient-ec-rel').value.trim();
+      const emergencyContactPhone = document.getElementById('edit-patient-ec-phone').value.trim();
+      const notes = document.getElementById('edit-patient-notes').value.trim();
+
+      const payload = {
+        fullName,
+        gender,
+        phone,
+        email: email || null,
+        bloodGroup: bloodGroup || null,
+        isActive,
+        address: address || null,
+        emergencyContactName: emergencyContactName || null,
+        emergencyContactRelation: emergencyContactRelation || null,
+        emergencyContactPhone: emergencyContactPhone || null,
+        notes: notes || null,
+        isAgeEstimated: editPatientIsAgeEstimated,
+      };
+
+      if (editPatientIsAgeEstimated) {
+        const estAge = parseInt(document.getElementById('edit-patient-est-age').value, 10);
+        if (isNaN(estAge) || estAge < 0 || estAge > 130) {
+          errBanner.textContent = 'Estimated age must be between 0 and 130 years.';
+          errBanner.style.display = 'block';
+          return;
+        }
+        payload.estimatedAge = estAge;
+      } else {
+        const dobVal = document.getElementById('edit-patient-dob').value;
+        if (!dobVal) {
+          errBanner.textContent = 'Exact date of birth is required.';
+          errBanner.style.display = 'block';
+          return;
+        }
+        payload.dateOfBirth = dobVal;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving Changes...';
+
+      try {
+        const res = await fetch(`${API_BASE}/patients/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errBanner.textContent = data.message || 'Failed to update demographics.';
+          errBanner.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Save Demographic Changes';
+          return;
+        }
+
+        alert(`Demographics for ${data.patient.fullName} (${data.patient.mrn}) updated successfully.`);
+        closeAllModals();
+        loadLivePatients(patientCurrentPage);
+      } catch (err) {
+        errBanner.textContent = 'Network communication failure with backend API.';
+        errBanner.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Demographic Changes';
+      }
+    }
+
+    // Helper: Copy MRN to clipboard
+    function copyMRN(mrn, btn) {
+      navigator.clipboard.writeText(mrn).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => { btn.textContent = originalText; }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

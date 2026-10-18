@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /backend/
+
+Sitemap: https://primecareclinic.pk/sitemap.xml

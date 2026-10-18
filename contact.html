@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Location — Prime Care Clinic & Diabetes Center</title>
+  <meta name="description" content="Contact details, location directions, and reported operating hours for Prime Care Clinic & Diabetes Center in Lalazar, Rawalpindi Cantt.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+</head>
+<body>
+  <div class="disclaimer-banner" role="alert">
+    <div class="container">
+      <strong>Concept/Demo Website</strong> — This is an independent concept website, not the official website of Prime Care Clinic.
+    </div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Prime Care Clinic Home">
+        <img src="assets/images/clinic-logo-circle.png" alt="Prime Care Clinic Logo" class="logo-img" width="44" height="44">
+        <div class="logo-text">
+          <span class="logo-name">Prime Care Clinic</span>
+          <span class="logo-sub">& Diabetes Center</span>
+        </div>
+      </a>
+      <nav class="nav-main" id="nav-main" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false">
+            Services
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+          </button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="services.html" class="nav-dropdown-link" role="menuitem">All Services</a>
+            <a href="general-consultation.html" class="nav-dropdown-link" role="menuitem">General Consultation</a>
+            <a href="diabetes-care.html" class="nav-dropdown-link" role="menuitem">Diabetes Care</a>
+          </div>
+        </div>
+        <a href="patient-info.html" class="nav-link">Patient Info</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+        <a href="login.html" class="nav-link" style="color: var(--color-teal); font-weight: 600;">🔒 Staff Portal</a>
+        <a href="appointment.html" class="header-cta">Request Appointment</a>
+      </nav>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span>›</span>
+          <span class="current">Contact & Location</span>
+        </nav>
+        <h1>Contact & Location</h1>
+        <p>Get in touch, view reported operating hours, and find location information for Prime Care Clinic.</p>
+      </div>
+    </section>
+
+    <!-- Emergency notice -->
+    <section class="section" style="padding-top: var(--space-8); padding-bottom: 0;">
+      <div class="container">
+        <div style="background: var(--color-warm-50); border: 1px solid var(--color-warm-200); border-left: 4px solid var(--color-warm-500); border-radius: var(--radius-md); padding: var(--space-4) var(--space-6); display: flex; align-items: flex-start; gap: var(--space-3);">
+          <span style="color: var(--color-warm-600); font-size: 1.25rem; line-height: 1;">⚠️</span>
+          <div>
+            <strong style="color: var(--color-navy); display: block; margin-bottom: 2px;">Medical Emergency Notice</strong>
+            <p style="margin: 0; font-size: var(--text-sm); color: var(--color-gray-600);">
+              This website and its forms are not monitored for emergency medical situations. If you are experiencing acute chest pain, severe shortness of breath, sudden weakness, or any other life-threatening medical emergency, call <strong>1122</strong> immediately or visit the nearest hospital emergency department (e.g., CMH Rawalpindi).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Contact Grid -->
+    <section class="section">
+      <div class="container">
+        <div class="appointment-layout">
+          <!-- Contact Details Column -->
+          <div>
+            <span class="section-label">Clinic Information</span>
+            <h2 class="section-title">Reach Prime Care Clinic</h2>
+            <p class="section-subtitle" style="margin-bottom: var(--space-8);">
+              Below is the clinic's public directory listing. Note that all listings are currently marked as awaiting direct clinic verification.
+            </p>
+
+            <div class="contact-grid" style="display: grid; grid-template-columns: 1fr; gap: var(--space-6);">
+              <!-- Address Card -->
+              <div class="card card--bordered" style="padding: var(--space-6);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3);">
+                  <div style="display: flex; align-items: center; gap: var(--space-3);">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-teal-50); color: var(--color-teal); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">📍</div>
+                    <h3 style="margin: 0; font-size: var(--text-lg); color: var(--color-navy);">Address</h3>
+                  </div>
+                  <span class="badge badge--warning">Awaiting Verification</span>
+                </div>
+                <p style="color: var(--color-gray-700); margin: 0 0 var(--space-2); line-height: 1.6;">
+                  Main Tulsa Road<br>
+                  Lalazar, Rawalpindi Cantt<br>
+                  Punjab, Pakistan
+                </p>
+                <p style="font-size: var(--text-xs); color: var(--color-gray-500); margin: 0;">
+                  Supplied via regional medical directory listing.
+                </p>
+              </div>
+
+              <!-- Phone Card -->
+              <div class="card card--bordered" style="padding: var(--space-6);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3);">
+                  <div style="display: flex; align-items: center; gap: var(--space-3);">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-teal-50); color: var(--color-teal); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">📞</div>
+                    <h3 style="margin: 0; font-size: var(--text-lg); color: var(--color-navy);">Phone Number</h3>
+                  </div>
+                  <span class="badge badge--warning">Awaiting Verification</span>
+                </div>
+                <p style="font-size: 1.25rem; font-weight: 600; color: var(--color-navy); margin: 0 0 var(--space-2);">
+                  +92 332 5494578
+                </p>
+                <p style="font-size: var(--text-xs); color: var(--color-gray-500); margin: 0;">
+                  Direct dial links remain unlinked pending official clinic confirmation to avoid misdirected calls.
+                </p>
+              </div>
+
+              <!-- Hours Card -->
+              <div class="card card--bordered" style="padding: var(--space-6);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3);">
+                  <div style="display: flex; align-items: center; gap: var(--space-3);">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-teal-50); color: var(--color-teal); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🕒</div>
+                    <h3 style="margin: 0; font-size: var(--text-lg); color: var(--color-navy);">Reported Operating Hours</h3>
+                  </div>
+                  <span class="badge badge--warning">Awaiting Verification</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-3);">
+                  <div style="display: flex; justify-content: space-between; font-size: var(--text-sm); border-bottom: 1px dashed var(--color-gray-200); padding-bottom: var(--space-1);">
+                    <span style="color: var(--color-gray-600);">Monday – Thursday:</span>
+                    <strong style="color: var(--color-navy);">5:30 PM – 10:00 PM</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: var(--text-sm); border-bottom: 1px dashed var(--color-gray-200); padding-bottom: var(--space-1);">
+                    <span style="color: var(--color-gray-600);">Friday:</span>
+                    <strong style="color: var(--color-navy);">5:00 PM – 10:00 PM</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: var(--text-sm); border-bottom: 1px dashed var(--color-gray-200); padding-bottom: var(--space-1);">
+                    <span style="color: var(--color-gray-600);">Saturday:</span>
+                    <strong style="color: var(--color-navy);">5:30 PM – 10:00 PM</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: var(--text-sm);">
+                    <span style="color: var(--color-gray-600);">Sunday:</span>
+                    <span style="color: var(--color-gray-500); font-weight: 500;">Closed</span>
+                  </div>
+                </div>
+                <p style="font-size: var(--text-xs); color: var(--color-gray-500); margin: var(--space-3) 0 0;">
+                  Hours may vary during public holidays or special clinic schedules.
+                </p>
+              </div>
+
+              <!-- Map placeholder card -->
+              <div class="card card--bordered" style="padding: var(--space-6); background: var(--color-gray-50);">
+                <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-white); border: 1px solid var(--color-gray-200); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">🗺️</div>
+                  <h3 style="margin: 0; font-size: var(--text-lg); color: var(--color-navy);">Interactive Map</h3>
+                </div>
+                <p style="font-size: var(--text-sm); color: var(--color-gray-600); margin-bottom: var(--space-3);">
+                  Location coordinates (33.5879° N, 73.0640° E — Lalazar, Rawalpindi Cantt). Full interactive Google Map embed is reserved until exact building pin is verified with clinic management.
+                </p>
+                <div style="padding: var(--space-8); text-align: center; border: 2px dashed var(--color-gray-300); border-radius: var(--radius-md); background: var(--color-white);">
+                  <span style="color: var(--color-gray-500); font-size: var(--text-sm);">Tulsa Road, Lalazar Area Map Pin — Verification Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- General Inquiry Form Column -->
+          <div>
+            <div class="card card--elevated" style="padding: var(--space-8);">
+              <span class="section-label">Online Inquiries</span>
+              <h2 style="font-size: var(--text-xl); color: var(--color-navy); margin-bottom: var(--space-2);">Send a Message</h2>
+              <p style="font-size: var(--text-sm); color: var(--color-gray-600); margin-bottom: var(--space-6);">
+                Have a general question regarding clinic visiting hours or appointment procedures? Send us an inquiry below.
+              </p>
+
+              <!-- Demo status alert -->
+              <div class="alert alert--info" style="margin-bottom: var(--space-6);">
+                <strong>Demo Mode Active:</strong> This form operates in client-side demonstration mode. Inquiries are validated for design and user experience testing, and are not transmitted to clinic staff.
+              </div>
+
+              <form id="contact-form" novalidate>
+                <div class="form-group">
+                  <label for="contact-name" class="form-label">Full Name <span style="color: var(--color-red);">*</span></label>
+                  <input type="text" id="contact-name" class="form-input" placeholder="e.g. Tariq Mehmood" required>
+                  <span class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-phone" class="form-label">Phone Number <span style="color: var(--color-red);">*</span></label>
+                  <input type="tel" id="contact-phone" class="form-input" placeholder="e.g. 0300 1234567" required>
+                  <span class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-email" class="form-label">Email Address (Optional)</label>
+                  <input type="email" id="contact-email" class="form-input" placeholder="e.g. patient@example.com">
+                  <span class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-subject" class="form-label">Subject <span style="color: var(--color-red);">*</span></label>
+                  <select id="contact-subject" class="form-input" required>
+                    <option value="">Select subject...</option>
+                    <option value="General Question">General Clinic Inquiry</option>
+                    <option value="Diabetes Management">Diabetes Care Information</option>
+                    <option value="Visiting Hours">Visiting Hours & Availability</option>
+                    <option value="Website Feedback">Website Feedback / Error Report</option>
+                  </select>
+                  <span class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-message" class="form-label">Message <span style="color: var(--color-red);">*</span></label>
+                  <textarea id="contact-message" class="form-input" rows="4" placeholder="How can we assist you?" required></textarea>
+                  <span class="form-error"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: var(--space-6);">
+                  <label style="display: flex; align-items: flex-start; gap: var(--space-2); font-size: var(--text-sm); color: var(--color-gray-700); cursor: pointer;">
+                    <input type="checkbox" id="contact-consent" style="margin-top: 3px;" required>
+                    <span>I understand this is a demonstration form and does not submit medical records or urgent requests.</span>
+                  </label>
+                  <span class="form-error"></span>
+                </div>
+
+                <button type="submit" class="btn btn--primary" style="width: 100%;">
+                  Send Message (Demo)
+                </button>
+              </form>
+
+              <div id="contact-feedback" style="display: none; margin-top: var(--space-6);" class="alert alert--success">
+                <strong>Message Simulated:</strong> Thank you for your inquiry. In live operation with a connected backend, our staff would reply via phone or email during business hours.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-about">
+          <a href="index.html" class="logo">
+            <img src="assets/images/clinic-logo-circle.png" alt="Prime Care Clinic Logo" class="logo-img" width="44" height="44">
+            <div class="logo-text">
+              <span class="logo-name">Prime Care Clinic</span>
+              <span class="logo-sub">& Diabetes Center</span>
+            </div>
+          </a>
+          <p class="footer-about-text">General physician consultations and specialized diabetes care in Lalazar, Rawalpindi Cantt, Pakistan.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="appointment.html">Appointment</a><a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Services</h4>
+          <div class="footer-links">
+            <a href="general-consultation.html">General Consultation</a><a href="diabetes-care.html">Diabetes Care</a><a href="patient-info.html">Patient Information</a><a href="faq.html">FAQ</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-use.html">Terms of Use</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-bottom-text">© 2024 Prime Care Clinic & Diabetes Center. This is a concept/demo website.</p>
+        <div class="footer-bottom-links"><a href="privacy-policy.html">Privacy</a><a href="terms-of-use.html">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Scroll to top">↑</button>
+  <script src="config/clinic.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.getElementById('contact-form');
+      const feedback = document.getElementById('contact-feedback');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let valid = true;
+
+          const nameInput = document.getElementById('contact-name');
+          const phoneInput = document.getElementById('contact-phone');
+          const subjectInput = document.getElementById('contact-subject');
+          const messageInput = document.getElementById('contact-message');
+          const consentInput = document.getElementById('contact-consent');
+
+          [nameInput, phoneInput, subjectInput, messageInput].forEach(inp => {
+            FormValidator.clearError(inp);
+            const err = FormValidator.validateField(inp);
+            if (err) {
+              FormValidator.showError(inp, err);
+              valid = false;
+            }
+          });
+
+          if (!consentInput.checked) {
+            const errEl = consentInput.closest('.form-group')?.querySelector('.form-error');
+            if (errEl) {
+              errEl.textContent = 'Please check the acknowledgment box.';
+              errEl.classList.add('visible');
+            }
+            valid = false;
+          }
+
+          if (valid) {
+            contactForm.style.display = 'none';
+            feedback.style.display = 'block';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

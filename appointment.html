@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Appointment — Prime Care Clinic & Diabetes Center</title>
+  <meta name="description" content="Request an appointment at Prime Care Clinic for general consultation or diabetes care. Submit your preferred date and time online.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+</head>
+<body>
+  <div class="disclaimer-banner" role="alert">
+    <div class="container"><strong>Concept/Demo Website</strong> — This is an independent concept website, not the official website of Prime Care Clinic.</div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Prime Care Clinic Home"><img src="assets/images/clinic-logo-circle.png" alt="Prime Care Clinic Logo" class="logo-img" width="44" height="44"><div class="logo-text"><span class="logo-name">Prime Care Clinic</span><span class="logo-sub">& Diabetes Center</span></div></a>
+      <nav class="nav-main" id="nav-main" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" aria-expanded="false">Services<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5L6 7.5L9 4.5"/></svg></button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="services.html" class="nav-dropdown-link" role="menuitem">All Services</a>
+            <a href="general-consultation.html" class="nav-dropdown-link" role="menuitem">General Consultation</a>
+            <a href="diabetes-care.html" class="nav-dropdown-link" role="menuitem">Diabetes Care</a>
+          </div>
+        </div>
+        <a href="patient-info.html" class="nav-link">Patient Info</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="appointment.html" class="header-cta" style="background: var(--color-navy-700);">Request Appointment</a>
+      </nav>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span>›</span><span class="current">Request Appointment</span>
+        </nav>
+        <h1>Request an Appointment</h1>
+        <p>Submit your preferred date and time. The clinic will contact you to confirm.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="grid grid--2" style="gap: var(--space-16);">
+          <!-- Appointment Form -->
+          <div>
+            <div class="alert alert--info" style="margin-bottom: var(--space-8);">
+              <strong>Demo Mode</strong> — This form is currently in demonstration mode. No data is transmitted or stored.
+              Once a backend system is configured, this form will submit appointment requests for clinic review.
+            </div>
+
+            <form id="appointment-form" novalidate>
+              <div class="form-group">
+                <label for="patient-name" class="form-label">
+                  Patient Full Name <span class="required">*</span>
+                </label>
+                <input type="text" id="patient-name" name="patientName" class="form-input"
+                       placeholder="Enter your full name" required autocomplete="name">
+                <p class="form-error" id="patient-name-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-number" class="form-label">
+                  Contact Number <span class="required">*</span>
+                </label>
+                <input type="tel" id="contact-number" name="contactNumber" class="form-input"
+                       placeholder="e.g., 0332 5494578" required autocomplete="tel">
+                <p class="form-error" id="contact-number-error"></p>
+              </div>
+
+              <div class="form-group">
+                <label for="consultation-type" class="form-label">
+                  Consultation Type <span class="required">*</span>
+                </label>
+                <select id="consultation-type" name="consultationType" class="form-select" required>
+                  <option value="">Select consultation type</option>
+                  <option value="general">General Physician Consultation</option>
+                  <option value="diabetes-initial">Diabetes Care — Initial Consultation</option>
+                  <option value="diabetes-followup">Diabetes Care — Follow-up Visit</option>
+                </select>
+                <p class="form-error" id="consultation-type-error"></p>
+              </div>
+
+              <div class="grid grid--2" style="gap: var(--space-5);">
+                <div class="form-group">
+                  <label for="preferred-date" class="form-label">
+                    Preferred Date <span class="required">*</span>
+                  </label>
+                  <input type="date" id="preferred-date" name="preferredDate" class="form-input" required>
+                  <p class="form-error" id="preferred-date-error"></p>
+                  <p class="form-hint">Select a date within the next 60 days</p>
+                </div>
+
+                <div class="form-group">
+                  <label for="preferred-time" class="form-label">
+                    Preferred Time <span class="required">*</span>
+                  </label>
+                  <select id="preferred-time" name="preferredTime" class="form-select" required>
+                    <option value="">Select time slot</option>
+                    <option value="17:00">5:00 PM</option>
+                    <option value="17:30">5:30 PM</option>
+                    <option value="18:00">6:00 PM</option>
+                    <option value="18:30">6:30 PM</option>
+                    <option value="19:00">7:00 PM</option>
+                    <option value="19:30">7:30 PM</option>
+                    <option value="20:00">8:00 PM</option>
+                    <option value="20:30">8:30 PM</option>
+                    <option value="21:00">9:00 PM</option>
+                    <option value="21:30">9:30 PM</option>
+                  </select>
+                  <p class="form-error" id="preferred-time-error"></p>
+                  <p class="form-hint">Clinic hours: 5:00/5:30 PM – 10:00 PM</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label">Additional Notes</label>
+                <textarea id="message" name="message" class="form-textarea"
+                          placeholder="Any additional information or specific concerns you'd like to mention (optional)"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="consent" name="consent" required>
+                  <span class="form-checkbox-text">
+                    I understand that submitting this form is a <strong>request</strong>, not a confirmed booking.
+                    The clinic will contact me to confirm the appointment. I agree to the
+                    <a href="privacy-policy.html" target="_blank">Privacy Policy</a> and
+                    <a href="terms-of-use.html" target="_blank">Terms of Use</a>.
+                  </span>
+                </label>
+                <p class="form-error" id="consent-error"></p>
+              </div>
+
+              <button type="submit" class="btn btn--primary btn--lg btn--block" id="submit-btn">
+                Submit Appointment Request
+              </button>
+
+              <div class="form-status" id="form-status"></div>
+            </form>
+          </div>
+
+          <!-- Sidebar Info -->
+          <div>
+            <!-- Consulting Physician Card -->
+            <div class="info-card mb-8" style="padding: var(--space-5); border-left: 4px solid var(--color-teal-600);">
+              <div style="display: flex; gap: var(--space-4); align-items: center;">
+                <img src="assets/images/doctor-farhan-square.jpg" alt="Dr. Muhammad Farhan Khan" style="width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-teal-500); flex-shrink: 0; box-shadow: 0 2px 8px rgba(11,37,69,0.15);">
+                <div>
+                  <h4 style="margin: 0; font-size: var(--text-base); color: var(--color-navy-800);">Dr. Muhammad Farhan Khan</h4>
+                  <span style="font-size: var(--text-xs); color: var(--color-teal-600); font-weight: 600; display: block; margin-top: 2px;">Consulting Physician & Diabetologist</span>
+                  <span style="font-size: 11px; background: #d1fae5; color: #065f46; font-weight: 600; padding: 2px 8px; border-radius: 9999px; display: inline-block; margin-top: 6px;">✓ In-Clinic Physician</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-card mb-8">
+              <div class="info-card-header">
+                <div class="info-card-icon">ℹ️</div>
+                <h3 class="info-card-title">How It Works</h3>
+              </div>
+              <div class="features-list">
+                <div class="features-list-item">
+                  <div class="features-list-icon" style="background: var(--color-teal-600); color: white; font-size: 10px; font-weight: 700;">1</div>
+                  <div class="features-list-text">
+                    <strong>Submit your request</strong>
+                    Fill out the form with your preferred date and time
+                  </div>
+                </div>
+                <div class="features-list-item">
+                  <div class="features-list-icon" style="background: var(--color-teal-600); color: white; font-size: 10px; font-weight: 700;">2</div>
+                  <div class="features-list-text">
+                    <strong>Clinic reviews your request</strong>
+                    The clinic checks availability and reviews your submission
+                  </div>
+                </div>
+                <div class="features-list-item">
+                  <div class="features-list-icon" style="background: var(--color-teal-600); color: white; font-size: 10px; font-weight: 700;">3</div>
+                  <div class="features-list-text">
+                    <strong>You receive confirmation</strong>
+                    The clinic contacts you to confirm or suggest an alternative time
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-card mb-8">
+              <div class="info-card-header">
+                <div class="info-card-icon">🕐</div>
+                <h3 class="info-card-title">Clinic Hours</h3>
+              </div>
+              <table class="hours-table">
+                <tbody>
+                  <tr><th>Mon – Thu</th><td>5:30 PM – 10:00 PM</td></tr>
+                  <tr><th>Friday</th><td>5:00 PM – 10:00 PM</td></tr>
+                  <tr><th>Saturday</th><td>5:30 PM – 10:00 PM</td></tr>
+                  <tr><th>Sunday</th><td class="closed">Closed</td></tr>
+                </tbody>
+              </table>
+              <span class="unverified-badge" style="margin-top: var(--space-3);">⚠ Hours may vary</span>
+            </div>
+
+            <div class="info-card">
+              <div class="info-card-header">
+                <div class="info-card-icon">📍</div>
+                <h3 class="info-card-title">Location</h3>
+              </div>
+              <p style="color: var(--color-gray-600); font-size: var(--text-sm); line-height: var(--leading-relaxed);">
+                Main Tulsa Road<br>
+                Lalazar, Rawalpindi Cantt<br>
+                Pakistan
+              </p>
+              <a href="contact.html" class="card-link" style="margin-top: var(--space-3);">Get directions →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-about"><a href="index.html" class="logo"><img src="assets/images/clinic-logo-circle.png" alt="Prime Care Clinic Logo" class="logo-img" width="44" height="44"><div class="logo-text"><span class="logo-name">Prime Care Clinic</span><span class="logo-sub">& Diabetes Center</span></div></a><p class="footer-about-text">General physician consultations and specialized diabetes care in Lalazar, Rawalpindi Cantt, Pakistan.</p></div>
+        <div><h4 class="footer-heading">Quick Links</h4><div class="footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="appointment.html">Appointment</a><a href="contact.html">Contact</a></div></div>
+        <div><h4 class="footer-heading">Services</h4><div class="footer-links"><a href="general-consultation.html">General Consultation</a><a href="diabetes-care.html">Diabetes Care</a><a href="patient-info.html">Patient Information</a><a href="faq.html">FAQ</a></div></div>
+        <div><h4 class="footer-heading">Legal</h4><div class="footer-links"><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-use.html">Terms of Use</a></div></div>
+      </div>
+      <div class="footer-bottom"><p class="footer-bottom-text">© 2024 Prime Care Clinic & Diabetes Center. This is a concept/demo website.</p><div class="footer-bottom-links"><a href="privacy-policy.html">Privacy</a><a href="terms-of-use.html">Terms</a></div></div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Scroll to top">↑</button>
+  <script src="config/clinic.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('appointment-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const statusEl = document.getElementById('form-status');
+      const dateInput = document.getElementById('preferred-date');
+
+      // Initialize API layer
+      AppointmentAPI.init(window.CLINIC_CONFIG);
+
+      // Set min date to today
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      dateInput.setAttribute('min', todayStr);
+
+      // Set max date to 60 days from now
+      const maxDate = new Date(today);
+      maxDate.setDate(maxDate.getDate() + 60);
+      dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+
+      // Real-time validation on blur
+      form.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('blur', () => {
+          const error = FormValidator.validateField(input);
+          if (error) {
+            FormValidator.showError(input, error);
+          } else {
+            FormValidator.clearError(input);
+          }
+        });
+
+        input.addEventListener('input', () => {
+          if (input.classList.contains('error')) {
+            FormValidator.clearError(input);
+          }
+        });
+      });
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Clear previous status
+        statusEl.className = 'form-status';
+        statusEl.textContent = '';
+
+        // Validate
+        if (!FormValidator.validateForm(form)) {
+          statusEl.className = 'form-status form-status--error visible';
+          statusEl.textContent = 'Please correct the errors above before submitting.';
+          return;
+        }
+
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+        // Gather form data
+        const formData = {
+          patientName: form.patientName.value.trim(),
+          contactNumber: form.contactNumber.value.trim(),
+          consultationType: form.consultationType.value,
+          preferredDate: form.preferredDate.value,
+          preferredTime: form.preferredTime.value,
+          message: form.message.value.trim(),
+        };
+
+        // Submit via API layer
+        const result = await AppointmentAPI.submit(formData);
+
+        if (result.success) {
+          const cssClass = result.demo ? 'form-status--demo' : 'form-status--success';
+          statusEl.className = `form-status ${cssClass} visible`;
+          statusEl.innerHTML = result.demo
+            ? `<strong>✓ Demo Submission Successful</strong><br>${result.message}`
+            : `<strong>✓ Request Submitted</strong><br>${result.message}`;
+
+          if (result.demo) {
+            // Don't reset form in demo mode — let user see what they entered
+          } else {
+            form.reset();
+          }
+        } else {
+          statusEl.className = 'form-status form-status--error visible';
+          statusEl.innerHTML = `<strong>Submission Error</strong><br>${result.message}`;
+        }
+
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Appointment Request';
+      });
+    });
+  </script>
+</body>
+</html>
